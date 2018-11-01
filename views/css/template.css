@@ -205,10 +205,10 @@ button {
 }
 
 fieldset {
-    border: 1px solid #ccc;
+    border: 1px solid #bcbcbc;
     border-radius: 5px;
     padding: 20px;
-    background-color: #cecccc3b;
+    background-color: #f6f6f6;
 }
 
 textarea {

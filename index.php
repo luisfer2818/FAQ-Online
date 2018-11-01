@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
 	<title>Login | FAQ Online</title>
 	<meta charset="UTF-8">
@@ -20,8 +20,6 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-<!--===============================================================================================-->
-	<!-- <link rel="stylesheet" type="text/css" href="css/valida.scss"> -->
 <!--===============================================================================================-->
 </head>
 <body>
@@ -48,14 +46,14 @@
                         	<i class="fa fa-exclamation-circle"></i> <strong></strong>
 				</div>
 				<div class="wrap-input100 validate-input" data-validate = "Digite um e-mail">
-					<input class="input100" type="email" id="email" name="email" placeholder="*E-mail">
+					<input class="input100" type="email" id="email" name="email" placeholder="E-mail">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-envelope" aria-hidden="true"></i>
 					</span>
 				</div>
 				<div class="wrap-input100 validate-input" data-validate = "Digite uma senha">
-					<input class="input100" type="password" id="senha" name="senha" placeholder="*Senha">
+					<input class="input100" type="password" id="senha" name="senha" placeholder="Senha">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-lock" aria-hidden="true"></i>
@@ -92,9 +90,9 @@
 					Cadastro
 				</span>
 				<div class="alert alert-success" style="display: none;">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            		<span aria-hidden="true">&times;</span>
-                        	</button>
+					<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"> -->
+                            		<!-- <span aria-hidden="true">&times;</span> -->
+                        	<!-- </button> -->
                         	<i class="fa fa-exclamation-circle"></i> <strong></strong>
 				</div>
 				<div class="wrap-input100 validate-input" data-validate = "Digite o nome">
@@ -136,6 +134,7 @@
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 	<script src="vendor/bootstrap/js/popper.js"></script>
+<!--===============================================================================================-->
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
@@ -188,6 +187,10 @@
 							$('.alert-success').css('display', 'block');
 							$('.alert-success strong').html(json.msg);
 							$('#form-cadastro')[0].reset()
+							setTimeout(() => {
+								$('#cadastro').css('display', 'none');
+								$('#login').css('display', 'block');
+							}, 1500);							
 						} else {
 							$('.alert-success').addClass('alert-danger');
 							$('.alert-danger').removeClass('alert-danger');
@@ -197,19 +200,18 @@
 				})
 			});
 
-			$('#nova-conta').unbind('click').click(function() {
-				$('#login').css('display', 'none');
-				$('#cadastro').css('display', 'block');
-				$('.alert-danger').css('display', 'none');
-			});
-
-			$('#realiza-login').unbind('click').click(function() {
-				$('#cadastro').css('display', 'none');
-				$('#login').css('display', 'block');
-			});
+		$('#nova-conta').unbind('click').click(function() {
+			$('#login').css('display', 'none');
+			$('#cadastro').css('display', 'block');
+			$('.alert-danger').css('display', 'none');
 		});
-	</script>
 
+		$('#realiza-login').unbind('click').click(function() {
+			$('#cadastro').css('display', 'none');
+			$('#login').css('display', 'block');
+		});
+	});
+	</script>
 	<script src="js/main.js"></script>
 
 </body>
