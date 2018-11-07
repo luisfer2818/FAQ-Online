@@ -89,7 +89,7 @@ h1::after {
             <div class="cd-faq-content">
                 <textarea class="form-control" rows="5" style="resize: none" id="pergunta" name="content" cols="50" rows="15" placeholder="Digite sua dúvida sobre qualquer assunto..."></textarea>
                 <br>
-                <a href="#" class="btn btn-primary" role="button">Postar dúvida</a>
+                <button href="#" class="btn btn-primary" type="submit" role="button">Postar dúvida</button>
             </div>	                   
                 </li>
             </div>
@@ -172,12 +172,12 @@ h1::after {
             $('[name="action"]').val('inserirMsg');
 
             let dadosForm = $(this).serialize();
-
-            console.log(dadosForm);
        
             let pergunta = $('#pergunta').val();
 
-            if (!pergunta){
+            console.log(pergunta);
+
+            /*if (!pergunta){
                 $('#msg-valida').html(`
                     <div class="alert alert-danger" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -187,7 +187,7 @@ h1::after {
                     </div>                        
                 `);
                 return false;
-            }
+            }*/
 
             $.ajax({
                 type: 'POST',

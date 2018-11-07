@@ -6,6 +6,8 @@ $action = $_POST['action'];
 
 $model = new UserDAO();
 
+$pergunta = '';
+
 switch ($action) {
     case 'inserirUser':
         $nome = $_POST['nome'];
