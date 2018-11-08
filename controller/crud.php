@@ -29,6 +29,11 @@ switch ($action) {
         $pergunta = $_POST['pergunta'];
         $model->inserirMsg($pergunta);
     break;
+
+    case 'inserirResp':
+        $resposta = $_POST['resposta'];
+        $model->inserirResp($resposta);
+    break;
     
     case 'editarMsg':
         $id = $_POST['id'];

@@ -16,7 +16,7 @@ CREATE TABLE perguntas (
 	id_pergunta int primary key auto_increment,
     id_usuario int,
 	pergunta LONGTEXT,
-    avaliacao varchar(100),
+    avaliacao int(20),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
@@ -37,6 +37,8 @@ CREATE TABLE usuario_tipo (
 INSERT INTO usuario (nome,email, senha) VALUES ('Felipe','filipesales19@gmail.com', md5('lipsaless'));
 INSERT INTO usuario (nome,email, senha) VALUES ('luis','luis@gmail.com', md5('1234'));
 
+alter table perguntas DROP COLUMN avaliacao;
+alter table perguntas ADD avaliacao int(20);
 
 SELECT * FROM usuario;
 SELECT * FROM perguntas;

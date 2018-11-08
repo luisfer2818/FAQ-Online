@@ -54,7 +54,7 @@ body.cd-overlay::after {
 }
 
 a {
-    color: #a9c056;
+    color: #000000;
     text-decoration: none;
 }
 
@@ -430,7 +430,7 @@ header h1 {
         top: 50%;
         height: 2px;
         width: 13px;
-        background: #cfdca0;
+        background: #000000;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         -webkit-transition-property: -webkit-transform;

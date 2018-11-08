@@ -53,7 +53,7 @@
                 </div>
                 <label for="msg">Pergunta:*</label>
                 <div class="form-group">
-                    <textarea rows="10" id="pergunta" name="pergunta"></textarea>
+                    <textarea rows="10" id="pergunta" name="pergunta" placeholder="Digite sua pergunta"></textarea>
                 </div>
                 <button class="positive ui button" type="submit"><i class="fa fa-check" aria-hidden="true"></i> Cadastrar</button>
                 </fieldset>

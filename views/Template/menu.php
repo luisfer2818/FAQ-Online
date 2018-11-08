@@ -24,7 +24,7 @@
             <a href="#tab-perfil"><i class="fa fa-user" aria-hidden="true"></i> Meu Perfil</a>
         </li>
         <li>
-            <a href="../views/ViewFaq/faq.php" tagert="_blank"><i class="fa fa-user-plus" aria-hidden="true"></i> Sistema FAQ/Usuario</a>
+            <a href="../views/ViewFaq/faq.php" target="_blank"><i class="fa fa-user-plus" aria-hidden="true"></i> Sistema FAQ/Usuario</a>
         </li>
     </ul>
   </nav>

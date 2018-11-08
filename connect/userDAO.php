@@ -9,6 +9,7 @@ class UserDAO
     private $id;
     private $nome;
     private $pergunta;
+    private $resposta;
 
     private $email;
     private $senha;
@@ -103,6 +104,34 @@ class UserDAO
             echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar inserir mensagem']);
             exit;
         }
+    }
+
+    public function inserirResp($resposta)
+    {
+        $this->resposta = $resposta;
+
+        $sql = "INSERT INTO respostas (resposta) VALUES ('{$resposta}');";
+        $result = mysqli_query($this->conexao->getConn(), $sql);
+        
+        if ($result) {
+            echo json_encode(['type' => 'success', 'msg' => 'Resposta inserida com sucesso']);
+            exit;
+        } else {
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar inserir Resposta']);
+            exit;
+        }
+    }
+
+    public function gridResp()
+    {
+        $sql = "SELECT * FROM respostas;";
+        $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
+        
+        $respostasGrid = array();
+        while ($row = $result->fetch_assoc()) {
+                $respostasGrid[] = $row;
+        }
+        return $respostasGrid;
     }
 
     public function grid()
