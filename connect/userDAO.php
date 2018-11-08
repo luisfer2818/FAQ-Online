@@ -65,6 +65,39 @@ class UserDAO
         }
     }
 
+    public function inserirUserAdmin($nome, $email, $senha)
+    {
+        if (empty($senha)) {
+            echo json_encode(['type' => 'error', 'msg' => 'Senha em branco']);
+            exit;
+        }
+
+        $this->nome = $nome;
+        $this->email = $email;
+        $this->senha = md5($senha);
+
+        $existeEmail = "SELECT * FROM usuario WHERE email = '{$this->email}';";
+        $query = mysqli_query($this->conexao->getConn(), $existeEmail);
+        $existe = mysqli_fetch_assoc($query);
+
+        if ($existe) {
+            echo json_encode(['type' => 'error', 'msg' => 'Usuário já está cadastrado']);
+            exit;
+        }
+
+        $sql = "INSERT INTO usuario (nome, email, senha) VALUES ('{$this->nome}','{$this->email}','{$this->senha}');";
+        $sql = "INNER JOIN usuario_tipo ut ON ut.id_usuario_tipo = u.id_usuario_tipo";
+        $result = mysqli_query($this->conexao->getConn(), $sql);
+        
+        if ($result) {
+            echo json_encode(['type' => 'success', 'msg' => 'Usuário inserido com sucesso']);
+            exit;
+        } else {
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao inserir usuário']);
+            exit;
+        }
+    }
+
     public function editarUser($id, $nome, $email, $senha, $senhaAntiga)
     {
         if (!$senha) {
@@ -89,6 +122,7 @@ class UserDAO
             exit;
         }
     }
+    
 
     public function inserirMsg($pergunta)
     {
