@@ -7,19 +7,40 @@
     $senha = addslashes($_POST['senha']);
 
     $user = $usuarioDAO->logar($email, $senha);
-    
-    if ($user == true) {
+    $tipoUsuarioLogado = $user['usuario_tipo'];
+
+    //var_dump($tipoUsuarioLogado);
+
+    if ($user == true && $tipoUsuarioLogado === 'A') {
         session_start();
 
         $_SESSION['user'] = $user;
+        //die('admin');
 
-        echo json_encode(['type' => 'success']);
+        echo json_encode(['type' => 'success', 'tipoUsuarioLogado' => $tipoUsuarioLogado]);
         exit;
 
-        // header('Location: ../admin.php');
-    } else {
+        header('Location: ../views/template.php');
+
+    }
+    
+    if ($user == true && $tipoUsuarioLogado === 'U') {
+        session_start();
+
+        $_SESSION['user'] = $user;
+        //die('user');
+
+        echo json_encode(['type' => 'success', 'tipoUsuarioLogado' => $tipoUsuarioLogado]);
+        exit;
+
+        header('Location: ../views/ViewFaq/faq.php');
+
+    }
+
+    if ($user == false) {
         echo json_encode(['type' => 'error', 'msg' => 'Dados inválidos']);
         exit;
         // header('Location: ../index.php?erro=senha');
     }
+
 ?>

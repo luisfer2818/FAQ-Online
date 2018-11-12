@@ -8,6 +8,7 @@ class UserDAO
 
     private $id;
     private $nome;
+    private $idUsuario;
     private $pergunta;
     private $resposta;
 
@@ -23,7 +24,7 @@ class UserDAO
     {
         $senha = md5($senha);
 
-        $sql = "SELECT id_usuario, nome, email, senha FROM usuario WHERE email = '{$email}' AND senha = '{$senha}';";
+        $sql = "SELECT id_usuario, nome, email, senha, usuario_tipo FROM usuario WHERE email = '{$email}' AND senha = '{$senha}';";
         $executa = mysqli_query($this->conexao->getConn(), $sql);
 
         if (mysqli_num_rows($executa) > 0) {
@@ -43,6 +44,7 @@ class UserDAO
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = md5($senha);
+        $this->usuario_tipo = 'U';
 
         $existeEmail = "SELECT * FROM usuario WHERE email = '{$this->email}';";
         $query = mysqli_query($this->conexao->getConn(), $existeEmail);
@@ -53,7 +55,7 @@ class UserDAO
             exit;
         }
 
-        $sql = "INSERT INTO usuario (nome, email, senha) VALUES ('{$this->nome}','{$this->email}','{$this->senha}');";
+        $sql = "INSERT INTO usuario (nome, email, senha, usuario_tipo) VALUES ('{$this->nome}','{$this->email}','{$this->senha}', '{$this->usuario_tipo}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -75,6 +77,7 @@ class UserDAO
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = md5($senha);
+        $this->usuario_tipo = 'A';
 
         $existeEmail = "SELECT * FROM usuario WHERE email = '{$this->email}';";
         $query = mysqli_query($this->conexao->getConn(), $existeEmail);
@@ -85,8 +88,7 @@ class UserDAO
             exit;
         }
 
-        $sql = "INSERT INTO usuario (nome, email, senha) VALUES ('{$this->nome}','{$this->email}','{$this->senha}');";
-        $sql = "INNER JOIN usuario_tipo ut ON ut.id_usuario_tipo = u.id_usuario_tipo";
+        $sql = "INSERT INTO usuario (nome, email, senha, usuario_tipo) VALUES ('{$this->nome}','{$this->email}','{$this->senha}', '{$this->usuario_tipo}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -124,27 +126,29 @@ class UserDAO
     }
     
 
-    public function inserirMsg($pergunta)
+    public function inserirMsg($idUsuario, $pergunta)
     {
+        $this->idUsuario = $idUsuario;
         $this->pergunta = $pergunta;
-
-        $sql = "INSERT INTO perguntas (pergunta) VALUES ('{$pergunta}');";
+       
+        $sql = "INSERT INTO perguntas (id_usuario, pergunta) VALUES ('{$idUsuario}', '{$pergunta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
-            echo json_encode(['type' => 'success', 'msg' => 'Mensagem inserida com sucesso']);
+            echo json_encode(['type' => 'success', 'msg' => 'Pergunta inserida com sucesso']);
             exit;
         } else {
-            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar inserir mensagem']);
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar inserir pergunta']);
             exit;
         }
     }
 
-    public function inserirResp($resposta)
+    public function inserirResp($idPergunta, $resposta)
     {
+        $this->idPergunta = $idPergunta;
         $this->resposta = $resposta;
 
-        $sql = "INSERT INTO respostas (resposta) VALUES ('{$resposta}');";
+        $sql = "INSERT INTO respostas (id_pergunta, resposta) VALUES ('{$idPergunta}', '{$resposta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -192,21 +196,7 @@ class UserDAO
 
         return $usuarios;
     }
-/*
-    public function gridUsuarioTipo()
-    {
-        $sql = "SELECT * FROM usuario_tipo;";
-        $result = mysqli_query($this->conexao->getConn(), $sql) or die('<script>alert("Falha ao editar o registro")</script>');
 
-        $usurios = array();
-
-        while ($row = $result->fetch_assoc()) {
-            $usuarios[] = $row;
-        }
-
-        return $usuarios;
-    }
-*/
     public function editarMsg($id, $pergunta)
     {
         $this->id = $id;
@@ -219,7 +209,7 @@ class UserDAO
             echo json_encode(['type' => 'success', 'msg' => 'Editado com sucesso']);
             exit;
         } else {
-            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar editar cadastro']);
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar editar Pergunta']);
             exit;
         }
     }
@@ -235,7 +225,7 @@ class UserDAO
             echo json_encode(['type' => 'success', 'msg' => 'Excluído com sucesso']);
             exit;
         } else {
-            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar excluir cadastro']);
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar excluir Pergunta']);
             exit;
         }
     }

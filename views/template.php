@@ -14,6 +14,7 @@
     if (!$_SESSION['user']) {
         header('Location: ./template.php');
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -238,7 +239,7 @@
         }
     });
 
-        //CADASTRAR Pergunta
+        //CADASTRAR PERGUNTA
         $('#form-cad-msg').unbind('submit').submit(function(e) {
             e.preventDefault();
 
@@ -276,7 +277,7 @@
             });
         });
 
-        //CADASTRAR USUARIO/ADMIN
+        //EDITAR USUARIO/ADMIN
         $('#form-perfil').unbind('submit').submit(function(e) {
             e.preventDefault();
 
@@ -299,7 +300,7 @@
             });
         });
 
-        //EDITAR
+        //EDITAR MENSAGEM
         $('.btn-editar-msg').unbind('click').click(function(e) {
             e.preventDefault();
 
@@ -318,7 +319,7 @@
             });
         });
 
-        //SALVAR
+        //SALVAR MENSAGEM
         $('.btn-save-msg').unbind('click').click(function(e) {
             //EVITAR MAIS DE UMA REQUISIÇÃO
             e.stopImmediatePropagation();
@@ -378,10 +379,11 @@
             });
         });
 
+        //CADASTRAR ADMINISTRADOR
         $('#form-perfil-admin').unbind('submit').submit(function(e) {
 				e.preventDefault();
 				
-				$('[name="action"]').val('inserirUser');
+				$('[name="action"]').val('inserirUserAdmin');
 
 				$.ajax({
 					method:'POST',

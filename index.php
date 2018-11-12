@@ -156,7 +156,12 @@
 					dataType:'json',
 					success: function(json) {
 						if (json.type == 'success') {
-							window.location.href = 'views/template.php';
+							if (json.tipoUsuarioLogado == 'A') {
+								window.location.href = "./views/template.php";
+							}
+							if (json.tipoUsuarioLogado == 'U') {
+								window.location.href = "./views/ViewFaq/faq.php";
+							}
 						} else {
 							$('.alert-danger').css('display', 'block');
 							$('.alert-danger strong').html(json.msg);

@@ -7,11 +7,11 @@
 
     $respostasGrid = $model->gridResp();
 
-    //session_start();    
+    session_start();    
 
-    /*if (!$_SESSION['user']) {
-        header('Location: ./template.php');
-    }*/
+    if (!$_SESSION['user']) {
+        header('Location: ./faq.php');
+    }
 ?>
 
 <!doctype html>
@@ -75,8 +75,16 @@ h1::after {
 <body>
 
     <header>
+        <div class="ui inverted segment">
+            <div class="ui inverted secondary pointing menu">
+                <a class="active item">Home</a>
+                <a class="item">Messages</a>
+                <a class="item"> Friends</a>
+            </div>
+        </div>
         <h1>FAQ Online</h1>
     </header>
+    
     <section class="cd-faq">
         <ul class="cd-faq-categories">
             <!-- <li><a href="#duvidas">Dúvidas?</a></li> -->

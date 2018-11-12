@@ -8,12 +8,21 @@ $model = new UserDAO();
 
 $pergunta = '';
 
+//var_dump($_POST['id_usuario']);
+
 switch ($action) {
     case 'inserirUser':
         $nome = $_POST['nome'];
         $email = $_POST['email'];
         $senha = $_POST['senha'];
         $model->inserirUser($nome, $email, $senha);
+    break;
+
+     case 'inserirUserAdmin':
+        $nome = $_POST['nome'];
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+        $model->inserirUserAdmin($nome, $email, $senha);
     break;
 
     case 'editarUser':
@@ -26,13 +35,15 @@ switch ($action) {
     break;
 
     case 'inserirMsg':
+        $idUsuario = $_POST['id_usuario'];
         $pergunta = $_POST['pergunta'];
-        $model->inserirMsg($pergunta);
+        $model->inserirMsg($idUsuario, $pergunta);
     break;
 
     case 'inserirResp':
+        $idPergunta = $_POST['id_pergunta'];
         $resposta = $_POST['resposta'];
-        $model->inserirResp($resposta);
+        $model->inserirResp($idPergunta, $resposta);
     break;
     
     case 'editarMsg':
