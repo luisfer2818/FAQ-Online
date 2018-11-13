@@ -24,9 +24,9 @@ CREATE TABLE perguntas (
 );
 
 CREATE TABLE respostas (
-	id_respostas int primary key auto_increment,
+	id_resposta int primary key auto_increment,
     id_pergunta int,
-	respostas VARCHAR(2000),
+	resposta VARCHAR(2000),
     avaliacao int(20),
     FOREIGN KEY (id_pergunta) REFERENCES perguntas(id_pergunta)
 );
@@ -41,6 +41,8 @@ CREATE TABLE usuario_tipo (
 INSERT INTO usuario (nome, email, senha, usuario_tipo) VALUES ('Felipe','filipesales19@gmail.com', md5('123'), 'U');
 INSERT INTO usuario (nome, email, senha, usuario_tipo) VALUES ('Luis','luis@gmail.com', md5('123'), 'A');
 
+INSERT INTO respostas (id_pergunta, respostas) VALUES ('12','Que nada vc e burro so acho kkkkk');
+
 alter table respostas DROP COLUMN respostas;
 alter table respostas ADD resposta LONGTEXT;
 
@@ -52,3 +54,7 @@ SELECT * FROM usuario;
 SELECT * FROM perguntas;
 SELECT * FROM respostas;
 SELECT * FROM usuario_tipo;
+
+
+SELECT * FROM perguntas p
+LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;

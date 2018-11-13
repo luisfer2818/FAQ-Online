@@ -1,0 +1,59 @@
+.checked {
+    color: orange;
+}
+
+h1::after {
+    content: '|';
+    margin-left: 5px;
+    opacity: 1;
+    animation: pisca .5s infinite;
+}
+
+@keyframes pisca {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.faq-textarea {
+    padding: 0px 0px 40px 210px;
+}
+
+.resposta-grid {
+    text-align: center;
+}
+.justify-content-end {
+    background: #000;
+}
+
+.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.menu-li {
+    float: left;
+}
+
+.menu-li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.menu-li a:hover:not(.active) {
+    background-color: #010101;
+    color: #8b8b8b;
+}
+
+.active {
+    background-color: #4CAF50;
+}

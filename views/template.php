@@ -7,13 +7,19 @@
 
     $usuarios = $model->gridUsuario();
 
-    //$usuarioTipo = $model->gridUsuarioTipo();
-
     session_start();    
 
     if (!$_SESSION['user']) {
         header('Location: ./template.php');
     }
+
+    $usuarioTipo = '';
+
+    foreach($usuarios as $key => $value){
+        $usuarioTipo = $value['usuario_tipo'];
+        
+    }
+    echo $usuarioTipo;
     
 ?>
 <!DOCTYPE html>
@@ -34,6 +40,14 @@
 
 <!--====== Navbar ======-->
 <?php include '../views/Template/navbar.php'; ?>
+
+<style>
+
+.about p {
+    text-align: left !important;
+}
+
+</style>
     <!--=========================================================-->
                         <!--CONTEÚDO-->
     <!--=========================================================-->
@@ -79,7 +93,7 @@
                 <tr data-id="<?php echo $value['id_pergunta']?>">
                     <!-- <td>#<?php //echo $value['id']; ?></td> -->
                     <!-- <td class="about" data-name="nome"><?php //echo $value['nome']; ?></td> -->
-                    <td class="about" data-name="pergunta"><?php echo $value['pergunta']; ?></td>
+                    <td class="about" data-name="pergunta" style="text-align: left;"><?php echo $value['pergunta']; ?></td>
                     <td>
                         <button class="tiny ui blue button btn-editar-msg"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button> 
                         <button class="tiny ui red button btn-excluir-msg" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
@@ -90,6 +104,19 @@
             </tbody>
         </table>
     </div>
+
+    <?php 
+        var_dump($usuarioTipo);
+        if ($usuarioTipo == 'A') {
+            $nomeTipoUsuario = 'Administrador';
+            $tipoUsuarioCor = 'green';
+        } else {
+            $nomeTipoUsuario = 'Usuário';
+            $tipoUsuarioCor = 'teal';
+        } 
+        var_dump($nomeTipoUsuario);
+
+    ?>
 
     <div id="tab-usuario" style="display:none;">
         <p class="text-p">Usuários</p>
@@ -102,15 +129,17 @@
                     <!-- <th>Id</th> -->
                     <th scope="col">Nome</th>
                     <th scope="col">E-mail</th>
+                    <th scope="col">Tipo Usúario</th>
                     <th scope="col">Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($usuarios as $key => $value) : ?>
+                <?php foreach ($usuarios as $key => $value) :  ?>
                 <tr data-id="<?php echo $value['id_usuario'] ?>">
                     <!-- <td>#<?php //echo $value['id']; ?></td> -->
                     <td class="about" data-name="nome"><?php echo $value['nome']; ?></td>
                     <td class="about" data-name="email"><?php echo $value['email']; ?></td>
+                    <td class="about" data-name="tipo"><a class="ui <?php echo $tipoUsuarioCor; ?> label"><?php echo $nomeTipoUsuario; ?> </a></td>
                     <td>
                         <button class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
                         <!-- <button class="tiny ui green button" id="botao-modal"> Modal </button> -->

@@ -6,10 +6,6 @@ $action = $_POST['action'];
 
 $model = new UserDAO();
 
-$pergunta = '';
-
-//var_dump($_POST['id_usuario']);
-
 switch ($action) {
     case 'inserirUser':
         $nome = $_POST['nome'];
@@ -42,7 +38,7 @@ switch ($action) {
 
     case 'inserirResp':
         $idPergunta = $_POST['id_pergunta'];
-        $resposta = $_POST['resposta'];
+        $resposta = $_POST['respostas'];
         $model->inserirResp($idPergunta, $resposta);
     break;
     

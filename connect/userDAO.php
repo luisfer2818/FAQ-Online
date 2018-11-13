@@ -10,6 +10,7 @@ class UserDAO
     private $nome;
     private $idUsuario;
     private $pergunta;
+    private $idPergunta;
     private $resposta;
 
     private $email;
@@ -130,7 +131,9 @@ class UserDAO
     {
         $this->idUsuario = $idUsuario;
         $this->pergunta = $pergunta;
-       
+
+        strip_tags($pergunta);
+
         $sql = "INSERT INTO perguntas (id_usuario, pergunta) VALUES ('{$idUsuario}', '{$pergunta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
@@ -148,7 +151,7 @@ class UserDAO
         $this->idPergunta = $idPergunta;
         $this->resposta = $resposta;
 
-        $sql = "INSERT INTO respostas (id_pergunta, resposta) VALUES ('{$idPergunta}', '{$resposta}');";
+        $sql = "INSERT INTO respostas (id_pergunta, respostas) VALUES ('{$idPergunta}', '{$resposta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -160,21 +163,9 @@ class UserDAO
         }
     }
 
-    public function gridResp()
-    {
-        $sql = "SELECT * FROM respostas;";
-        $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
-        
-        $respostasGrid = array();
-        while ($row = $result->fetch_assoc()) {
-                $respostasGrid[] = $row;
-        }
-        return $respostasGrid;
-    }
-
     public function grid()
     {
-        $sql = "SELECT * FROM perguntas;";
+        $sql  = " SELECT * FROM perguntas p LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;";
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
         
         $dados = array();
