@@ -48,7 +48,6 @@
         <ul class="menu">
             <li class="menu-li"><a href="faq.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
             <li class="menu-li"><a href="#news"><i class="fa fa-question" aria-hidden="true"></i> Perguntas</a></li>
-            <!-- <li><a href="#contact">Repostas</a></li> -->
             <li class="menu-li" style="float:right">
                 <a id="sair" href="../../controller/logout.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Sair</a>
             </li>
@@ -59,38 +58,28 @@
     
     <section class="cd-faq">
         <ul class="cd-faq-categories">
-            <!-- <li><a href="#duvidas">Dúvidas?</a></li> -->
             <li><a class="selected" href="#basics">Dúvidas Frequentes <i class="fa fa-question" aria-hidden="true"></i></a></li>
-            <!-- <li><a href="#mobile">Mobile</a></li> -->
-            <!-- <li><a href="#account">Sistemas Web</a></li> -->
-            <!-- <li><a href="#payments">Lógica de programação</a></li> -->
-            <!-- <li><a href="#privacy">Banco de dados</a></li> -->
-            <!-- <li><a href="#delivery">Levantamento de requisitos</a></li> -->
         </ul>
-        <!-- cd-faq-categories -->
 	    <br><br><br><br>
 
+        <!-- CADASTRAR PERGUNTAS -->
         <div class="faq-textarea">
             <ul id="basics" class="cd-faq-group">
-            <form id="form-cad-msg" class="container" id="needs-validation">
-                <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
-                <input type="hidden" name="action" value="">
+                <form id="form-cad-msg" class="container" id="needs-validation">
+                    <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
+                    <input type="hidden" name="action" value="">
                     <li class="cd-faq-title">
                         <h2>Poste sua dúvida</h2>
                     </li>
                     <div id="msg-valida" style="display:none;"></div>
                         <textarea class="form-control" rows="5" style="resize: none" id="pergunta" name="pergunta" cols="50" rows="15" placeholder="Digite sua dúvida sobre qualquer assunto..."></textarea>
-                        <br>
-                        <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
-                    <!-- </div>	                    -->
-                        <!-- </li> -->
-                    <!-- </div> -->
-                    <!-- cd-faq-content -->
+                    <br>
+                    <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
                 </form>
-                </ul>
-            </div>
+            </ul>
+        </div>
 
-    <!-- LISTAR PERGUNTAS -->
+    <!-- LISTAR PERGUNTAS 
     <div class="cd-faq-items">
         <ul id="basics" class="cd-faq-group">
         <li class="cd-faq-title">
@@ -109,26 +98,53 @@
                             <div class="form-group">
                                 <textarea class="form-control" rows="5" id="resposta" name="resposta" style="resize: none" placeholder="Digite sua opinião sobre o assunto..."></textarea>
                             </div>
-                            <?php include '../Template/avaliacao.php'; ?>
+                            <?php //include '../Template/avaliacao.php'; ?>
                             <br>
                             <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
-                            <br><br><br><br>
+                            <br><br>
                             <a class="resposta-grid" href="#0"><?php echo $value['respostas']; ?></a>
                         </form>
                     </div>                  
-            <!-- FIM RESPOSTAS -->
-        <!-- cd-faq-content -->
                 </li>
             <?php endforeach; ?>
         </ul>
-        <!-- cd-faq-group -->
+    </div> -->
+
+
+     <!-- LISTAR PERGUNTAS -->
+    <div class="cd-faq-items">
+        <ul id="basics" class="cd-faq-group">
+        <li class="cd-faq-title">
+            <h2>Perguntas</h2>
+        </li>
+            <?php foreach ($dados as $key => $value): ?>
+                <li>
+                    <a class="cd-faq-trigger" href="#0"><?php echo $value['pergunta']; ?></a>
+                    <div class="cd-faq-content">
+                        <form id="form-cad-resp" class="container" id="needs-validation">
+                            <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
+                            <input type="hidden" name="id_pergunta" value="<?php echo $_SESSION['user']['id_pergunta']; ?>">
+                            <input type="hidden" name="action" value="">                              
+                            <div id="msg-valida" style="display:none;"></div>
+                            <br>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="5" id="resposta" name="resposta" style="resize: none" placeholder="Digite sua opinião sobre o assunto..."></textarea>
+                            </div>
+                            <br>
+                            <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
+                            <br><br>
+                            <a class="resposta-grid" href="#0"><?php echo $value['respostas']; ?></a>
+                        </form>
+                    </div>                  
+                </li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 
         <!-- cd-faq-items -->
-    <a href="#0" class="cd-close-panel">Close</a>
+        <a href="#0" class="cd-close-panel">Close</a>
     </section>   
     
-    <!-- cd-faq -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.js"></script> -->
     <script type="text/javascript" src="../js/tinymce/tinymce4.min.js"></script>
     <script src="../js/jquery-2.1.1.js"></script>
@@ -137,10 +153,13 @@
     <!-- <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script> -->
     <script src="../js/jquery.mobile.custom.min.js"></script>
     <script src="../js/main.js"></script>
+    <!-- SCRIPT DA PAGINA -->
+    <?php include '../Template/script.php'; ?>
+    <!-- FIM SCRIPT -->
 
-    <!-- Resource jQuery -->
     <script>
 
+        // FUNÇÃO QUE FAZ O EFEITO DE ESCREVENDO NA TELA
         function typeWriter(elemento) {
             const textoArray = elemento.innerHTML.split('');
             elemento.innerHTML = '';
@@ -152,6 +171,7 @@
         const titulo = document.querySelector('h1');
         typeWriter(titulo);
 
+        // INICIA O TINYMCE -> (TEXTAREA)
         tinyMCE.init({
             mode : "textareas"
         });
@@ -159,12 +179,10 @@
          //CADASTRAR PERGUNTA
         $('#form-cad-msg').unbind('submit').submit(function(e) {
             e.preventDefault();
-
             $('[name="action"]').val('inserirMsg');
             $('[name="pergunta"]').val(tinyMCE.activeEditor.getContent());
 
             let dadosForm = $('#form-cad-msg').serialize();
-       
             /*let pergunta = $('#pergunta').val();
 
             if (!pergunta){
@@ -183,7 +201,7 @@
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
-                        window.location.href = '../ViewFaq/faq.php';
+                        //window.location.href = '../ViewFaq/faq.php';
                     } else {
                         $('.alert-danger').css('display', 'block');
                         $('.alert-danger').html(json.msg);
@@ -201,12 +219,10 @@
         //CADASTRAR RESPOSTA
         $('#form-cad-resp').unbind('submit').submit(function(e) {
             e.preventDefault();
-
             $('[name="action"]').val('inserirResp');
             $('[name="resposta"]').val(tinyMCE.activeEditor.getContent());
 
             let dadosForm = $('#form-cad-resp').serialize();
-       
             /*let resposta = $('#resposta').val();
 
             if (!resposta){
@@ -227,9 +243,9 @@
                     if (json.type == 'success') {
                         window.location.href = '../ViewFaq/faq.php';
                     } else {
-							$('.alert-danger').css('display', 'block');
-							$('.alert-danger').html(json.msg);
-							tiraMsg()
+                        $('.alert-danger').css('display', 'block');
+                        $('.alert-danger').html(json.msg);
+                        tiraMsg()
 					}
                 }
             });

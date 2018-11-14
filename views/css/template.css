@@ -271,3 +271,7 @@ textarea {
     color: black;
     font-weight: bolder;
 }
+
+.about p {
+    text-align: left !important;
+}

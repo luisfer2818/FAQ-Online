@@ -57,4 +57,8 @@ switch ($action) {
         $id = $_POST['id'];
         $model->excluirUser($id);
     break;
+
+    case 'gridPergunta':
+        $model->grid();
+    break;
 }

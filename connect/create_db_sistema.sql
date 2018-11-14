@@ -19,7 +19,6 @@ CREATE TABLE perguntas (
 	id_pergunta int primary key auto_increment,
     id_usuario int,
 	pergunta  VARCHAR(2000),
-    avaliacao int(20),
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 
@@ -54,7 +53,3 @@ SELECT * FROM usuario;
 SELECT * FROM perguntas;
 SELECT * FROM respostas;
 SELECT * FROM usuario_tipo;
-
-
-SELECT * FROM perguntas p
-LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;

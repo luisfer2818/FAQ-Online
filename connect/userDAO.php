@@ -165,14 +165,22 @@ class UserDAO
 
     public function grid()
     {
-        $sql  = " SELECT * FROM perguntas p LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;";
+        $sql  = " SELECT p.* FROM perguntas p LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;";
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
         
         $dados = array();
-        while ($row = $result->fetch_assoc()) {
+        /*while ($row = $result->fetch_assoc()) {
                 $dados[] = $row;
+        }*/
+        //return $dados;
+
+        if ($dados) {
+            echo json_encode(['type' => 'success', 'msg' => 'Editado com sucesso', 'dados' => $dados]);
+            exit;
+        } else {
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar editar Pergunta']);
+            exit;
         }
-        return $dados;
     }
 
     public function gridUsuario()

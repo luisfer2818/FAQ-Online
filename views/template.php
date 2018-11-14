@@ -3,7 +3,7 @@
 
     $model = new UserDAO();
 
-    $dados = $model->grid();
+    //$dados = $model->grid();
 
     $usuarios = $model->gridUsuario();
 
@@ -14,14 +14,9 @@
     }
 
     $usuarioTipo = '';
-
-    foreach($usuarios as $key => $value){
-        $usuarioTipo = $value['usuario_tipo'];
-        
-    }
-    echo $usuarioTipo;
-    
+    //var_dump($usuarioTipo); 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -35,21 +30,14 @@
 <!-- =====LINK MENU CSS =====-->
 <?php include '../views/Template/link_css.php'; ?>
 
-<!--====== Menu ======-->
+<!--========= MENU ==========-->
 <?php include '../views/Template/menu.php';?>
 
-<!--====== Navbar ======-->
+<!--========= NAVBAR ========-->
 <?php include '../views/Template/navbar.php'; ?>
 
-<style>
-
-.about p {
-    text-align: left !important;
-}
-
-</style>
     <!--=========================================================-->
-                        <!--CONTEÚDO-->
+                        <!--CADASTRAR PERGUNTAS-->
     <!--=========================================================-->
     <div id="tab-cadastro-msg" style="display:none;">
         <p class="text-p">Cadastrar Perguntas</p>
@@ -77,12 +65,20 @@
         <!-- /.container -->
     </div>
 
+    <!--=========================================================-->
+                        <!--LISTAR PERGUNTAS-->
+    <!--=========================================================-->
     <div id="tab-visualiza-msg" style="display:none;">
         <p class="text-p"> Perguntas</p>
+        <form id="form-grid-perguntas">
+             <input type="hidden" name="action" value="">
+             <input type="text">
+             <button type="submit">TESTE</button>
+        </form>
+        <div id="show-table-pergunta"></div>
         <table class="ui padded table">
             <thead>
                 <tr>
-                    <!-- <th>Id</th> -->
                     <!-- <th>Nome</th> -->
                     <th>Perguntas</th>
                     <th>Ações</th>
@@ -105,19 +101,9 @@
         </table>
     </div>
 
-    <?php 
-        var_dump($usuarioTipo);
-        if ($usuarioTipo == 'A') {
-            $nomeTipoUsuario = 'Administrador';
-            $tipoUsuarioCor = 'green';
-        } else {
-            $nomeTipoUsuario = 'Usuário';
-            $tipoUsuarioCor = 'teal';
-        } 
-        var_dump($nomeTipoUsuario);
-
-    ?>
-
+    <!--=========================================================-->
+                        <!--USUÁRIOS/ADMIN-->
+    <!--=========================================================-->
     <div id="tab-usuario" style="display:none;">
         <p class="text-p">Usuários</p>
         <div class="ui primary button" id="botao-novo" data-content="Cadastrar novo administrador">
@@ -134,7 +120,17 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($usuarios as $key => $value) :  ?>
+                <?php foreach ($usuarios as $key => $value) :  
+                     $usuarioTipo = $value['usuario_tipo'];
+
+                    if ($usuarioTipo == 'A') {
+                        $nomeTipoUsuario = 'Administrador';
+                        $tipoUsuarioCor = 'black';
+                    } else {
+                        $nomeTipoUsuario = 'Usuário';
+                        $tipoUsuarioCor = 'blue';
+                    } 
+                ?>
                 <tr data-id="<?php echo $value['id_usuario'] ?>">
                     <!-- <td>#<?php //echo $value['id']; ?></td> -->
                     <td class="about" data-name="nome"><?php echo $value['nome']; ?></td>
@@ -150,7 +146,7 @@
         </table>
     </div>
 
-    <div class="ui mini modal" id="modal-excluir" style="display: none;">
+    <!-- ''MODAL EXEMPLO''  <div class="ui mini modal" id="modal-excluir" style="display: none;">
         <div class="header">
             Deseja realmente excluir?
         </div>
@@ -159,8 +155,11 @@
         <div class="or" data-text="ou"></div>
             <button class="ui positive button">Salvar</button>
         </div>
-    </div>
+    </div> -->
 
+    <!--=========================================================-->
+                        <!--ADMINISTRADOR-->
+    <!--=========================================================-->
     <div id="tab-usuario-admin" style="display:none;">
         <p class="text-p">Cadastrar Administrador</p>
         <button id="botao-voltar" class="ui black basic button" style="margin-bottom: 15px; margin-left: 65px;">
@@ -201,20 +200,23 @@
         </div>
     </div>
 
+    <!--=========================================================-->
+                            <!--MEU PERFIL-->
+    <!--=========================================================-->
     <div id="tab-perfil">
         <p class="text-p">Meu Perfil</p>
-                <div class="container-fluid">
-                    <form id="form-perfil" class="container" id="needs-validation">
-                        <input type="hidden" name="id" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
-                        <input type="hidden" name="action" value="">
+            <div class="container-fluid">
+                <form id="form-perfil" class="container" id="needs-validation">
+                    <input type="hidden" name="id" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
+                    <input type="hidden" name="action" value="">
                     <div class="alert alert-success" style="display: none;">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <i class="fa fa-check"></i> 
-                            <strong></strong>
-                        </div>
-                        <fieldset>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <i class="fa fa-check"></i> 
+                        <strong></strong>
+                    </div>
+                    <fieldset>
                             <legend style="width:auto; font-size: 1.3em; color: black; font-weight: bolder;">Dados</legend>
                         <div class="form-group">
                             <label>Nome:</label>
@@ -231,26 +233,26 @@
                                 <input type="hidden" class="form-control" name="senhaAntiga">                       
                             <a type="button" id="showPassword-admin" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
-                    </div>
-                <button class="positive ui button" type="submit"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
-            </fieldset>
-        </form>
+                        </div>
+                        <button class="positive ui button" type="submit"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
     </div>
-    </div>
-    <!--=========================================================-->
-                        <!--FIM CONTEÚDO-->
-    <!--=========================================================-->
-</div>
+<!--=========================================================-->
+                    <!--FIM CONTEÚDO-->
+<!--=========================================================-->
 
-<!-- ===================================================== -->
+
 <!-- SCRIPT DA PAGINA -->
 <?php include '../views/Template/script.php'; ?>
 <!-- FIM SCRIPT -->
 
 <script>
+    //FUNCÃO QUE MOSTRA A SENHA NO INPUT
     $(document).ready(function() {
         $('[href="#tab-visualiza-msg"]').click();
-
         $('#showPassword-admin, #showPassword').on('click', function(){
     
         var passwordField = $('#password-admin, #password');
@@ -268,196 +270,214 @@
         }
     });
 
-        //CADASTRAR PERGUNTA
-        $('#form-cad-msg').unbind('submit').submit(function(e) {
-            e.preventDefault();
+    //CADASTRAR PERGUNTA
+    $('#form-cad-msg').unbind('submit').submit(function(e) {
+        e.preventDefault();
+        $('[name="action"]').val('inserirMsg');
 
-            $('[name="action"]').val('inserirMsg');
+        let dadosForm = $(this).serialize();
+        //console.log(dadosForm);
+        let pergunta = $('#pergunta').val();
 
-            let dadosForm = $(this).serialize();
+        if (!pergunta){
+            $('#msg-valida').html(`
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <i class="fa fa-exclamation-circle"></i> <strong> Campo Pergunta obrigatório! </strong>
+                </div>                        
+            `);
+            return false;
+        }
 
-            console.log(dadosForm);
-       
-            let pergunta = $('#pergunta').val();
-
-            if (!pergunta){
-                $('#msg-valida').html(`
-                    <div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <i class="fa fa-exclamation-circle"></i> <strong> Campo Pergunta obrigatório! </strong>
-                    </div>                        
-                `);
-                return false;
+        $.ajax({
+            type: 'POST',
+            url: '../controller/crud.php',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(json) {
+                if (json.type == 'success') {
+                    //window.location.href = 'template.php';
+                    console.log(json);
+                   
+                }
             }
+        });
+    });
 
-            $.ajax({
-                type: 'POST',
-                url: '../controller/crud.php',
-                data: $(this).serialize(),
-                dataType: 'json',
-                success: function(json) {
-                    if (json.type == 'success') {
-                    //    $.toast('Toast message to be shown')
-                        window.location.href = 'template.php';
-                    }
+     $('#form-grid-perguntas').unbind('submit').submit(function(e) {
+        e.preventDefault();
+        $('[name="action"]').val('gridPerguntas');
+        //let dadosForm = $(this).serialize();
+
+        $.ajax({
+            type: 'GET',
+            url: '../controller/crud.php',
+            data: {
+                action: $('[name="action"]').val('gridPerguntas')
+            },
+            dataType: 'json',
+            success: function(json) {
+                if (json.type == 'success') {
+                   console.log(json);
                 }
-            });
+            }
         });
+    });
 
-        //EDITAR USUARIO/ADMIN
-        $('#form-perfil').unbind('submit').submit(function(e) {
-            e.preventDefault();
+    //EDITAR USUARIO/ADMIN
+    $('#form-perfil').unbind('submit').submit(function(e) {
+        e.preventDefault();
+        $('[name="action"]').val('editarUser');
+        let dadosForm = $(this).serialize();
 
-            $('[name="action"]').val('editarUser');
-
-            let dadosForm = $(this).serialize();
-
-            $.ajax({
-                type: 'POST',
-                url: '../controller/crud.php',
-                data: $(this).serialize(),
-                dataType: 'json',
-                success: function(json) {
-                    if (json.type == 'success') {
-                        $('.alert-success').css('display','block');
-                        $('.alert-success strong').html(json.msg);
-                        $('[name="senhaAntiga"]').val(json.senha);
-                    }
+        $.ajax({
+            type: 'POST',
+            url: '../controller/crud.php',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(json) {
+                if (json.type == 'success') {
+                    $('.alert-success').css('display','block');
+                    $('.alert-success strong').html(json.msg);
+                    $('[name="senhaAntiga"]').val(json.senha);
                 }
-            });
+            }
         });
+    });
 
-        //EDITAR MENSAGEM
-        $('.btn-editar-msg').unbind('click').click(function(e) {
-            e.preventDefault();
+    //EDITAR PERGUNTA
+    $('.btn-editar-msg').unbind('click').click(function(e) {
+        e.preventDefault();
 
-            let $trClicada = $(e.target).closest('tr');
+        let $trClicada = $(e.target).closest('tr');
 
-            $.each($trClicada.find('td.about'), function(key, rs) { 
-                $td = $(rs);
+        $.each($trClicada.find('td.about'), function(key, rs) { 
+            $td = $(rs);
 
-                valorAEditar = $td.text();
-                
-                $td.html('<div class="field"><input class="form-control" width="50" name="'+$td.attr('data-name')+'" value="'+valorAEditar+'"></div>')
-                $($trClicada).find('.btn-editar-msg').hide();
-                $($trClicada).find('.btn-excluir-msg').hide();
-                //MOSTRAR SAVE
-                $($trClicada).find('.btn-save-msg').show();
-            });
-        });
-
-        //SALVAR MENSAGEM
-        $('.btn-save-msg').unbind('click').click(function(e) {
-            //EVITAR MAIS DE UMA REQUISIÇÃO
-            e.stopImmediatePropagation();
-
-            let $trClicadaQuandoSalvar = $(e.target).closest('tr');
-            let $inputsDaTr = $trClicadaQuandoSalvar.find('input')
-
-            //VARIAVEL QUE VAI NO DATA DO AJAX
-            let objMensagem = {}
+            valorAEditar = $td.text();
             
-            //VARRENDO INPUTS DA TR CLICADA
-            $.each($inputsDaTr, function (key, rs) {
-                let $input = $(rs)
-                let nomeInput = $input.attr('name')
-
-                //PEGANDO VALORES DA PROPRIEDADE NAME
-                objMensagem[nomeInput] = $input.val()
-            })
-
-             objMensagem.id = $trClicadaQuandoSalvar.attr('data-id')
-             objMensagem.action = 'editarMsg';
-
-            //AJAX
-            $.ajax({
-                type: 'POST',
-                url: $('.btn-save-msg').attr('action'),
-                data: objMensagem,
-                dataType: 'json',
-                success: function(json) {
-                    if (json.type == 'success') {
-                        //DISABLE NO INPUT APÓS SALVAR
-                        $inputsDaTr.closest('.field').css('opacity', '0.4');
-                        $($trClicadaQuandoSalvar).find('.btn-save-msg').css('opacity', '0.4');
-
-                        window.location.href = 'template.php';
-                    }
-                }
-            });
+            $td.html('<div class="field"><input class="form-control" width="50" name="'+$td.attr('data-name')+'" value="'+valorAEditar+'"></div>')
+            $($trClicada).find('.btn-editar-msg').hide();
+            $($trClicada).find('.btn-excluir-msg').hide();
+            //MOSTRAR SAVE
+            $($trClicada).find('.btn-save-msg').show();
         });
+    });
+
+    //SALVAR PERGUNTA
+    $('.btn-save-msg').unbind('click').click(function(e) {
+        //EVITAR MAIS DE UMA REQUISIÇÃO
+        e.stopImmediatePropagation();
+
+        let $trClicadaQuandoSalvar = $(e.target).closest('tr');
+        let $inputsDaTr = $trClicadaQuandoSalvar.find('input')
+
+        //VARIAVEL QUE VAI NO DATA DO AJAX
+        let objMensagem = {}
         
-        //EXCLUIR MENSAGEM
-        $('.btn-excluir-msg').unbind('click').click(function(e) {
-            e.preventDefault();
-            var idMsg = $(e.target).closest('tr').attr('data-id');
+        //VARRENDO INPUTS DA TR CLICADA
+        $.each($inputsDaTr, function (key, rs) {
+            let $input = $(rs)
+            let nomeInput = $input.attr('name')
 
-            $.ajax({
-                type: 'POST',
-                url: $('.btn-excluir-msg').attr('action'),
-                data: {
-                    id: idMsg,
-                    action: 'excluirMsg'
-                },
-                dataType: 'json',
-                success: function(json) {
-                    $(e.target).closest('tr').hide()
+            //PEGANDO VALORES DA PROPRIEDADE NAME
+            objMensagem[nomeInput] = $input.val()
+        })
+
+            objMensagem.id = $trClicadaQuandoSalvar.attr('data-id')
+            objMensagem.action = 'editarMsg';
+
+        //AJAX
+        $.ajax({
+            type: 'POST',
+            url: $('.btn-save-msg').attr('action'),
+            data: objMensagem,
+            dataType: 'json',
+            success: function(json) {
+                if (json.type == 'success') {
+                    //DISABLE NO INPUT APÓS SALVAR
+                    $inputsDaTr.closest('.field').css('opacity', '0.4');
+                    $($trClicadaQuandoSalvar).find('.btn-save-msg').css('opacity', '0.4');
+
+                    window.location.href = 'template.php';
                 }
-            });
+            }
         });
+    });
+    
+    //EXCLUIR MENSAGEM
+    $('.btn-excluir-msg').unbind('click').click(function(e) {
+        e.preventDefault();
+        var idMsg = $(e.target).closest('tr').attr('data-id');
 
-        //CADASTRAR ADMINISTRADOR
-        $('#form-perfil-admin').unbind('submit').submit(function(e) {
-				e.preventDefault();
-				
-				$('[name="action"]').val('inserirUserAdmin');
+        console.log(idMsg);
 
-				$.ajax({
-					method:'POST',
-					url: '../controller/crud.php',
-					data: $(this).serialize(),
-					dataType:'json',
-					success: function(json) {
-						if (json.type == 'success') {
-							$('.alert-success').css('display', 'block');
-							$('.alert-success strong').html(json.msg);
-                            $('#form-perfil-admin')[0].reset()
-                            $('#form-perfil-admin .fa-check').css('display', 'block')
-						} else {
-                            $('.alert-success').addClass('alert-danger');
-                            $('.alert-danger').removeClass('alert-success');
-                            $('.alert-danger').css('display', 'block');
-                            $('#form-perfil-admin .fa-check').css('display', 'none')
-                            $('.alert-danger strong').html(json.msg);
-                            tiraMsg()
-                        }                        
-                    }
-                })
-                function tiraMsg (){
-                    setTimeout(() => {
-                        $('.alert-danger').css('display', 'none')
-                    }, 3000);
-                }
-			});
+        $.ajax({
+            type: 'POST',
+            url: $('.btn-excluir-msg').attr('action'),
+            data: {
+                id: idMsg,
+                action: 'excluirMsg'
+            },
+            dataType: 'json',
+            success: function(json) {
+                $(e.target).closest('tr').hide()
+            }
+        });
+    });
 
-        //EXCLUIR USUARIO
-        $('.btn-excluir-user').unbind('click').click(function(e) {
-            e.preventDefault();
-            var idUser = $(e.target).closest('tr').attr('data-id');
+    //CADASTRAR ADMINISTRADOR
+    $('#form-perfil-admin').unbind('submit').submit(function(e) {
+        e.preventDefault();
+        
+        $('[name="action"]').val('inserirUserAdmin');
 
-            $.ajax({
-                type: 'POST',
-                url: $('.btn-excluir-user').attr('action'),
-                data: {
-                    id: idUser,
-                    action: 'excluirUser'
-                },
-                dataType: 'json',
-                success: function(json) {
-                    $(e.target).closest('tr').hide()
-                }
+        $.ajax({
+            method:'POST',
+            url: '../controller/crud.php',
+            data: $(this).serialize(),
+            dataType:'json',
+            success: function(json) {
+                if (json.type == 'success') {
+                    $('.alert-success').css('display', 'block');
+                    $('.alert-success strong').html(json.msg);
+                    $('#form-perfil-admin')[0].reset()
+                    $('#form-perfil-admin .fa-check').css('display', 'block')
+                } else {
+                    $('.alert-success').addClass('alert-danger');
+                    $('.alert-danger').removeClass('alert-success');
+                    $('.alert-danger').css('display', 'block');
+                    $('#form-perfil-admin .fa-check').css('display', 'none')
+                    $('.alert-danger strong').html(json.msg);
+                    tiraMsg()
+                }                        
+            }
+        })
+        function tiraMsg (){
+            setTimeout(() => {
+                $('.alert-danger').css('display', 'none')
+            }, 3000);
+        }
+    });
+
+    //EXCLUIR USUARIO
+    $('.btn-excluir-user').unbind('click').click(function(e) {
+        e.preventDefault();
+        var idUser = $(e.target).closest('tr').attr('data-id');
+
+        $.ajax({
+            type: 'POST',
+            url: $('.btn-excluir-user').attr('action'),
+            data: {
+                id: idUser,
+                action: 'excluirUser'
+            },
+            dataType: 'json',
+            success: function(json) {
+                $(e.target).closest('tr').hide()
+            }
             });
         });
     });
@@ -501,6 +521,7 @@
         $('#tab-perfil').hide();
     });
 
+    //TAB-BOTAO
     $('[href="#botao-modal"]').click(function(){
         $('#modal-excluir').css('display', 'block');
         $('.mini.modal').modal('show');
