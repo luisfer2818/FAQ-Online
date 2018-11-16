@@ -146,12 +146,16 @@ class UserDAO
         }
     }
 
-    public function inserirResp($idPergunta, $resposta)
+    public function inserirResp($idPergunta, $idUsuario, $resposta)
     {
         $this->idPergunta = $idPergunta;
+        $this->idUsuario = $idUsuario;
         $this->resposta = $resposta;
 
-        $sql = "INSERT INTO respostas (id_pergunta, respostas) VALUES ('{$idPergunta}', '{$resposta}');";
+        //strip_tags($resposta);
+        //var_dump($idPergunta, $resposta);
+
+        $sql = "INSERT INTO respostas (id_pergunta, id_usuario, resposta) VALUES ('{$idPergunta}', '{$idUsuario}', '{$resposta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -165,14 +169,14 @@ class UserDAO
 
     public function grid()
     {
-        $sql  = " SELECT p.* FROM perguntas p LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;";
+        $sql  = " SELECT rp.*, p.* FROM perguntas p LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;";
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
         
         $dados = array();
-        /*while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
                 $dados[] = $row;
-        }*/
-        //return $dados;
+        }
+        return $dados;
 
         if ($dados) {
             echo json_encode(['type' => 'success', 'msg' => 'Editado com sucesso', 'dados' => $dados]);

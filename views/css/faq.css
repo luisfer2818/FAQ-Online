@@ -28,7 +28,10 @@ h1::after {
 }
 
 .resposta-grid {
-    text-align: center;
+    text-align: left;
+    color: #000;
+    font-weight: bold;
+    font-size: 1.4em;
 }
 .justify-content-end {
     background: #000;

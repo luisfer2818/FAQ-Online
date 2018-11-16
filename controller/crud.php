@@ -38,8 +38,9 @@ switch ($action) {
 
     case 'inserirResp':
         $idPergunta = $_POST['id_pergunta'];
+        $idUsuario = $_POST['id_usuario'];
         $resposta = $_POST['respostas'];
-        $model->inserirResp($idPergunta, $resposta);
+        $model->inserirResp($idPergunta, $idUsuario, $resposta);
     break;
     
     case 'editarMsg':

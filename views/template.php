@@ -3,7 +3,7 @@
 
     $model = new UserDAO();
 
-    //$dados = $model->grid();
+    $dados = $model->grid();
 
     $usuarios = $model->gridUsuario();
 
@@ -166,7 +166,7 @@
             <i class="fa fa-reply" aria-hidden="true"></i> Voltar
         </button>
         <div class="container-fluid">
-            <form id="form-perfil-admin" class="container" id="needs-validation">
+            <form name="formuser" id="form-perfil-admin" class="container" id="needs-validation">
                 <!-- <input type="hidden" name="id" value="<?php echo $_SESSION['user']['id_usuario']; ?>"> -->
                 <input type="hidden" name="action" value="">
                 <div class="alert alert-success" style="display: none;">
@@ -194,7 +194,15 @@
                             <a type="button" id="showPassword-admin" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                    <button class="positive ui button" type="submit"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                     <div class="form-group">
+                        <label>Confirme sua senha:</label>
+                        <div class="ui fluid action input">
+                            <input type="password" class="form-control" id="admin-password" name="rep-senha">
+                            <input type="hidden" class="form-control" name="senhaAntiga">                       
+                            <a type="button" id="admin-showPassword" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <button class="positive ui button" type="submit" onClick="validar()"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
                 </fieldset>
             </form>
         </div>
@@ -250,8 +258,33 @@
 <!-- FIM SCRIPT -->
 
 <script>
+
     //FUNCÃO QUE MOSTRA A SENHA NO INPUT
     $(document).ready(function() {
+
+        function validar(){
+            var senha = formuser.senha.value;
+            var rep_senha = formuser.rep_senha.value;
+            
+            if(senha == "" || senha.length <= 5){
+                alert('Preencha o campo senha com minimo 6 caracteres');
+                formuser.senha.focus();
+                return false;
+            }
+            
+            if(rep_senha == "" || rep_senha.length <= 5){
+                alert('Preencha o campo senha com minimo 6 caracteres');
+                formuser.rep_senha.focus();
+                return false;
+            }
+            
+            if (senha != rep_senha) {
+                alert('Senhas diferentes');
+                formuser.senha.focus();
+                return false;
+            }
+        }
+
         $('[href="#tab-visualiza-msg"]').click();
         $('#showPassword-admin, #showPassword').on('click', function(){
     
@@ -300,7 +333,6 @@
                 if (json.type == 'success') {
                     //window.location.href = 'template.php';
                     console.log(json);
-                   
                 }
             }
         });
@@ -544,6 +576,16 @@
         $('#tab-usuario-admin').hide();
         $('#tab-visualiza-msg').hide();
     });
+
+     /*function validarSenha(){
+        password-admin = document.getElementById('password-admin').value;
+        admin-password = document.getElementById('admin-password').value;
+        if (password-admin != admin-password) {
+            alert("SENHAS DIFERENTES!\nFAVOR DIGITAR SENHAS IGUAIS"); 
+        }else{
+            document.FormSenha.submit();
+        }
+    }*/
 
 </script>
 

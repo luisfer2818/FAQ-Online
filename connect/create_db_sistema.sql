@@ -25,9 +25,11 @@ CREATE TABLE perguntas (
 CREATE TABLE respostas (
 	id_resposta int primary key auto_increment,
     id_pergunta int,
+    id_usuario int,
 	resposta VARCHAR(2000),
     avaliacao int(20),
-    FOREIGN KEY (id_pergunta) REFERENCES perguntas(id_pergunta)
+    FOREIGN KEY (id_pergunta) REFERENCES perguntas(id_pergunta),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario)
 );
 /*
 CREATE TABLE usuario_tipo (
@@ -47,9 +49,11 @@ alter table respostas ADD resposta LONGTEXT;
 
 alter table usuario ADD id_usuario_tipo int;
 
-DROP table IF EXISTS  `perguntas`;
+DROP table IF EXISTS  `respostas`;
 DROP table usuario_tipo;
 SELECT * FROM usuario;
 SELECT * FROM perguntas;
 SELECT * FROM respostas;
 SELECT * FROM usuario_tipo;
+
+DELETE FROM respostas WHERE id_resposta = 6,7,8,9,10,11,12,13;

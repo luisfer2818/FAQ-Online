@@ -10,8 +10,9 @@
     if (!$_SESSION['user']) {
         header('Location: ./faq.php');
     }
-
-    // var_dump($_SESSION['user']['id_usuario']);
+    //echo '<pre>';
+    //var_dump($_SESSION['user']);
+    //var_dump($dados);
 ?>
 
 <!doctype html>
@@ -27,11 +28,15 @@
 
     <link rel="stylesheet" type="text/css" href="../../vendor/font-awesome/fontawesome-all.css">
 
+    <link rel="stylesheet" type="text/css" href="../../vendor/toastr/jquery.toast.min.css">
+
     <link rel="stylesheet" type="text/css" href="../css/faq.css">
 
     <link rel="shortcut icon" href="../../images/faq.png" />
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
     <!-- CSS reset -->
@@ -47,7 +52,7 @@
 <body>
         <ul class="menu">
             <li class="menu-li"><a href="faq.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-            <li class="menu-li"><a href="#news"><i class="fa fa-question" aria-hidden="true"></i> Perguntas</a></li>
+            <!-- <li class="menu-li"><a href="#news"><i class="fa fa-question" aria-hidden="true"></i> Perguntas</a></li> -->
             <li class="menu-li" style="float:right">
                 <a id="sair" href="../../controller/logout.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Sair</a>
             </li>
@@ -71,45 +76,13 @@
                     <li class="cd-faq-title">
                         <h2>Poste sua dúvida</h2>
                     </li>
-                    <div id="msg-valida" style="display:none;"></div>
+                    <div id="msg-valida"></div>
                         <textarea class="form-control" rows="5" style="resize: none" id="pergunta" name="pergunta" cols="50" rows="15" placeholder="Digite sua dúvida sobre qualquer assunto..."></textarea>
                     <br>
                     <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
                 </form>
             </ul>
         </div>
-
-    <!-- LISTAR PERGUNTAS 
-    <div class="cd-faq-items">
-        <ul id="basics" class="cd-faq-group">
-        <li class="cd-faq-title">
-            <h2>Perguntas</h2>
-        </li>
-            <?php foreach ($dados as $key => $value): ?>
-                <li>
-                    <a class="cd-faq-trigger" href="#0"><?php echo $value['pergunta']; ?></a>
-                    <div class="cd-faq-content">
-                        <form id="form-cad-resp" class="container" id="needs-validation">
-                            <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
-                            <input type="hidden" name="id_pergunta" value="<?php echo $_SESSION['user']['id_pergunta']; ?>">
-                            <input type="hidden" name="action" value="">                              
-                            <div id="msg-valida" style="display:none;"></div>
-                            <br>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="5" id="resposta" name="resposta" style="resize: none" placeholder="Digite sua opinião sobre o assunto..."></textarea>
-                            </div>
-                            <?php //include '../Template/avaliacao.php'; ?>
-                            <br>
-                            <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
-                            <br><br>
-                            <a class="resposta-grid" href="#0"><?php echo $value['respostas']; ?></a>
-                        </form>
-                    </div>                  
-                </li>
-            <?php endforeach; ?>
-        </ul>
-    </div> -->
-
 
      <!-- LISTAR PERGUNTAS -->
     <div class="cd-faq-items">
@@ -121,26 +94,26 @@
                 <li>
                     <a class="cd-faq-trigger" href="#0"><?php echo $value['pergunta']; ?></a>
                     <div class="cd-faq-content">
-                        <form id="form-cad-resp" class="container" id="needs-validation">
+                        <form class="container form-cad-resposta">
                             <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
-                            <input type="hidden" name="id_pergunta" value="<?php echo $_SESSION['user']['id_pergunta']; ?>">
-                            <input type="hidden" name="action" value="">                              
-                            <div id="msg-valida" style="display:none;"></div>
-                            <br>
+                            <input type="hidden" name="id_pergunta" value="<?php echo $value['id_pergunta']; ?>">
+                            <input type="hidden" name="action" value="">                                                       
+                            <br>                     
                             <div class="form-group">
-                                <textarea class="form-control" rows="5" id="resposta" name="resposta" style="resize: none" placeholder="Digite sua opinião sobre o assunto..."></textarea>
+                                <textarea class="form-control" rows="5" id="resposta-text" name="respostas" style="resize:none" placeholder="Digite sua opinião sobre o assunto..."></textarea>
+                            <div id="msg-valida"></div>
                             </div>
                             <br>
                             <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
                             <br><br>
-                            <a class="resposta-grid" href="#0"><?php echo $value['respostas']; ?></a>
+                            <a class="resposta-grid" href="#0"><?php echo $value['resposta']; ?></a>
                         </form>
                     </div>                  
                 </li>
+                 <?php //echo '<pre>'; var_dump($value); ?>
             <?php endforeach; ?>
         </ul>
     </div>
-
         <!-- cd-faq-items -->
         <a href="#0" class="cd-close-panel">Close</a>
     </section>   
@@ -148,16 +121,30 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.js"></script> -->
     <script type="text/javascript" src="../js/tinymce/tinymce4.min.js"></script>
     <script src="../js/jquery-2.1.1.js"></script>
-    <script src="../Template/script.js"></script>
     <!-- <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script> -->
-    <!-- <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../../vendor/toastr/jquery.toast.min.js"></script>
     <script src="../js/jquery.mobile.custom.min.js"></script>
     <script src="../js/main.js"></script>
+
+   <!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <!-- SCRIPT DA PAGINA -->
-    <?php include '../Template/script.php'; ?>
+    <?php include '../Template/loader.php'; ?>
     <!-- FIM SCRIPT -->
 
     <script>
+
+        //CONFIGURAÇÃO DO TOASTR(POPUP->NOTIFICAÇÃO)
+        $(document).ready(function() {
+            toastr.options.timeOut = 5000; // 1.5s
+            toastr.options.showMethod = 'slideDown';
+            toastr.options.hideMethod = 'slideUp';
+            toastr.options.closeMethod = 'slideUp';
+            toastr.options.closeButton = true;
+            //toastr.options.positionClass = "toast-center";
+            //toastr.info('Seja Bem Vindo! ');
+        });
 
         // FUNÇÃO QUE FAZ O EFEITO DE ESCREVENDO NA TELA
         function typeWriter(elemento) {
@@ -183,16 +170,17 @@
             $('[name="pergunta"]').val(tinyMCE.activeEditor.getContent());
 
             let dadosForm = $('#form-cad-msg').serialize();
-            /*let pergunta = $('#pergunta').val();
+            let pergunta = $('#pergunta').val();
 
             if (!pergunta){
-                $('#msg-valida').html(`
+                   $('#msg-valida').html(`
                     <div class="alert alert-danger" role="alert">                  
                         <i class="fa fa-exclamation-circle"></i> <strong> Campo Pergunta Vazio! </strong>
                     </div>                        
                 `);
+                tiraMsg()
                 return false;
-            }*/
+            }
 
             $.ajax({
                 type: 'POST',
@@ -201,11 +189,14 @@
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
+                        toastr.success("Pergunta cadastrada com Sucesso!");
+                        $('#form-cad-msg')[0].reset()
                         //window.location.href = '../ViewFaq/faq.php';
                     } else {
-                        $('.alert-danger').css('display', 'block');
+                        toastr.error("Error ao cadastrar Pergunta!");
+                        /*$('.alert-danger').css('display', 'block');
                         $('.alert-danger').html(json.msg);
-                        tiraMsg()
+                        tiraMsg()*/
 					}
                 }
             });
@@ -217,13 +208,13 @@
         });
 
         //CADASTRAR RESPOSTA
-        $('#form-cad-resp').unbind('submit').submit(function(e) {
+        $('.form-cad-resposta').unbind('submit').submit(function(e) {
             e.preventDefault();
             $('[name="action"]').val('inserirResp');
-            $('[name="resposta"]').val(tinyMCE.activeEditor.getContent());
+            $('[name="respostas"]').val(tinyMCE.activeEditor.getContent());
 
-            let dadosForm = $('#form-cad-resp').serialize();
-            /*let resposta = $('#resposta').val();
+            let dadosForm = $('#form-cad-resposta').serialize();
+            let resposta = $('#resposta-text').val();
 
             if (!resposta){
                 $('#msg-valida').html(`
@@ -231,21 +222,25 @@
                         <i class="fa fa-exclamation-circle"></i> <strong> Campo Resposta Vazio! </strong>
                     </div>                        
                 `);
+                tiraMsg()
                 return false;
-            }*/
+            }
 
-            $.ajax({
+           $.ajax({
                 type: 'POST',
                 url: '../../controller/crud.php',
                 data: $(this).serialize(),
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
-                        window.location.href = '../ViewFaq/faq.php';
+                        toastr.success("Resposta cadastrada com Sucesso!");
+                        $('#form-cad-resposta')[0].reset()
+                        //window.location.href = '../ViewFaq/faq.php';
                     } else {
-                        $('.alert-danger').css('display', 'block');
+                        toastr.error("Error ao cadastrar Resposta!");
+                        /*$('.alert-danger').css('display', 'block');
                         $('.alert-danger').html(json.msg);
-                        tiraMsg()
+                        tiraMsg()*/
 					}
                 }
             });
