@@ -28,7 +28,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../vendor/font-awesome/fontawesome-all.css">
 
-    <link rel="stylesheet" type="text/css" href="../../vendor/toastr/jquery.toast.min.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/toastr/jquery.toast.css">
 
     <link rel="stylesheet" type="text/css" href="../css/faq.css">
 
@@ -50,24 +50,54 @@
 </head>
 
 <body>
-        <ul class="menu">
-            <li class="menu-li"><a href="faq.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
-            <!-- <li class="menu-li"><a href="#news"><i class="fa fa-question" aria-hidden="true"></i> Perguntas</a></li> -->
-            <li class="menu-li" style="float:right">
-                <a id="sair" href="../../controller/logout.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Sair</a>
-            </li>
-        </ul>
+    <!-- MENU -->
+    <ul class="menu">
+        <li class="menu-li"><a href="faq.php"><i class="fa fa-home" aria-hidden="true"></i> Home</a></li>
+        <!-- <li class="menu-li"><a href="#news"><i class="fa fa-question" aria-hidden="true"></i> Perguntas</a></li> -->
+        <li class="menu-li" style="float:right">
+            <a id="sair" href="../../controller/logout.php"><i class="fa fa-sign-in" aria-hidden="true"></i> Sair</a>
+        </li>
+    </ul>
+
+    <!-- TITLE -->
     <header>
-        <h1>FAQ Online</h1>
+        <h1>🤔 FAQ Online</h1>
     </header>
     
+    <!-- MENU LATERAL -->
     <section class="cd-faq">
         <ul class="cd-faq-categories">
+            <li><a href="#duvida">Perguntas 🤔</a></li>
+            <!-- <li><a href="#mobile">Perguntas <i class="fa fa-question" aria-hidden="true"></i></a></li> -->
             <li><a class="selected" href="#basics">Dúvidas Frequentes <i class="fa fa-question" aria-hidden="true"></i></a></li>
         </ul>
-	    <br><br><br><br>
+	    <br>
 
-        <!-- CADASTRAR PERGUNTAS -->
+    <div class="cd-faq-items">
+        <ul id="duvida" class="cd-faq-group">
+        <li class="cd-faq-title">
+            <h2>Dúvidas? Só perguntar 🤔</h2>
+        </li>
+        <li>
+            <a href="#0" class="cd-faq-trigger">Poste sua Dúvida</a>
+            <div class="cd-faq-content">
+               <form id="form-cad-msg" class="container" id="needs-validation">
+                    <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
+                    <input type="hidden" name="action" value="">
+                    
+                    <div id="msg-valida"></div>
+                        <textarea class="form-control" rows="5" style="resize:none" id="pergunta" name="pergunta" cols="50" rows="15" placeholder="Digite sua dúvida sobre qualquer assunto..."></textarea>
+                    <br>
+                    <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
+                </form>
+            </div>
+        </li>
+        </ul>
+    <br>
+
+
+
+        <!-- CADASTRAR PERGUNTAS 
         <div class="faq-textarea">
             <ul id="basics" class="cd-faq-group">
                 <form id="form-cad-msg" class="container" id="needs-validation">
@@ -82,14 +112,15 @@
                     <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
                 </form>
             </ul>
-        </div>
+        </div> -->
 
      <!-- LISTAR PERGUNTAS -->
-    <div class="cd-faq-items">
+    
         <ul id="basics" class="cd-faq-group">
         <li class="cd-faq-title">
             <h2>Perguntas</h2>
         </li>
+        <?php //echo '<pre>'; print_r($dados); ?>
             <?php foreach ($dados as $key => $value): ?>
                 <li>
                     <a class="cd-faq-trigger" href="#0"><?php echo $value['pergunta']; ?></a>
@@ -101,19 +132,20 @@
                             <br>                     
                             <div class="form-group">
                                 <textarea class="form-control" rows="5" id="resposta-text" name="respostas" style="resize:none" placeholder="Digite sua opinião sobre o assunto..."></textarea>
-                            <div id="msg-valida"></div>
+                                <div id="msg-valida"></div>
                             </div>
-                            <br>
                             <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
-                            <br><br>
-                            <a class="resposta-grid" href="#0"><?php echo $value['resposta']; ?></a>
+                            <hr>
+                            <?php foreach ($value['respostas'] as $resposta ): ?>
+                                <a class="resposta-grid" href="#0"><?php echo $resposta['resposta']; ?></a><hr>                                
+                            <?php endforeach; ?>
                         </form>
                     </div>                  
                 </li>
-                 <?php //echo '<pre>'; var_dump($value); ?>
             <?php endforeach; ?>
         </ul>
     </div>
+
         <!-- cd-faq-items -->
         <a href="#0" class="cd-close-panel">Close</a>
     </section>   
@@ -123,19 +155,19 @@
     <script src="../js/jquery-2.1.1.js"></script>
     <!-- <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script> -->
     <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../vendor/toastr/jquery.toast.min.js"></script>
+    <script src="../../vendor/toastr/jquery.toast.js"></script>
     <script src="../js/jquery.mobile.custom.min.js"></script>
     <script src="../js/main.js"></script>
 
-   <!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
     <!-- SCRIPT DA PAGINA -->
     <?php include '../Template/loader.php'; ?>
     <!-- FIM SCRIPT -->
 
     <script>
 
-        //CONFIGURAÇÃO DO TOASTR(POPUP->NOTIFICAÇÃO)
+        //CONFIGURAÇÃO DO TOASTR(POPUP -> NOTIFICAÇÃO)
         $(document).ready(function() {
             toastr.options.timeOut = 5000; // 1.5s
             toastr.options.showMethod = 'slideDown';
@@ -154,13 +186,12 @@
                 setTimeout(() => elemento.innerHTML += letra, 270 * i);
             });
         }
-
         const titulo = document.querySelector('h1');
         typeWriter(titulo);
 
         // INICIA O TINYMCE -> (TEXTAREA)
         tinyMCE.init({
-            mode : "textareas"
+           mode : "textareas"
         });
 
          //CADASTRAR PERGUNTA
@@ -182,6 +213,7 @@
                 return false;
             }
 
+            //MANDA O AJAX DE PERGUNTA
             $.ajax({
                 type: 'POST',
                 url: '../../controller/crud.php',
@@ -189,6 +221,7 @@
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
+                        alert('Pergunta cadastrada com Sucesso!');
                         toastr.success("Pergunta cadastrada com Sucesso!");
                         $('#form-cad-msg')[0].reset()
                         //window.location.href = '../ViewFaq/faq.php';
@@ -225,14 +258,16 @@
                 tiraMsg()
                 return false;
             }
-
-           $.ajax({
+            
+            //MANDA O AJAX DE RESPOSTA
+            $.ajax({
                 type: 'POST',
                 url: '../../controller/crud.php',
                 data: $(this).serialize(),
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
+                        alert('Resposta cadastrada com Sucesso!');
                         toastr.success("Resposta cadastrada com Sucesso!");
                         $('#form-cad-resposta')[0].reset()
                         //window.location.href = '../ViewFaq/faq.php';

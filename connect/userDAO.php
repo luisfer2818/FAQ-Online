@@ -169,13 +169,18 @@ class UserDAO
 
     public function grid()
     {
-        $sql  = " SELECT rp.*, p.* FROM perguntas p LEFT JOIN respostas rp ON rp.id_pergunta = p.id_pergunta;";
+        $sql  = " SELECT * FROM perguntas";
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
         
         $dados = array();
         while ($row = $result->fetch_assoc()) {
                 $dados[] = $row;
         }
+
+        foreach ($dados AS $key => $pergunta) {
+            $dados[$key]['respostas'] = $this->getRespostasByPergunta($pergunta['id_pergunta']);
+        }
+
         return $dados;
 
         if ($dados) {
@@ -185,6 +190,18 @@ class UserDAO
             echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar editar Pergunta']);
             exit;
         }
+    }
+
+     public function getRespostasByPergunta($id_pergunta)
+    {
+        $sql  = " SELECT * FROM respostas WHERE id_pergunta = {$id_pergunta}";
+        $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
+        
+        $dados = array();
+        while ($row = $result->fetch_assoc()) {
+                $dados[] = $row;
+        }
+        return $dados;
     }
 
     public function gridUsuario()
