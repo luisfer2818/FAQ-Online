@@ -134,7 +134,7 @@ class UserDAO
 
         strip_tags($pergunta);
 
-        $sql = "INSERT INTO perguntas (id_usuario, pergunta) VALUES ('{$idUsuario}', '{$pergunta}');";
+        $sql = "INSERT INTO perguntas (id_usuario, no_pergunta) VALUES ('{$idUsuario}', '{$pergunta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -155,7 +155,7 @@ class UserDAO
         //strip_tags($resposta);
         //var_dump($idPergunta, $resposta);
 
-        $sql = "INSERT INTO respostas (id_pergunta, id_usuario, resposta) VALUES ('{$idPergunta}', '{$idUsuario}', '{$resposta}');";
+        $sql = "INSERT INTO respostas (id_pergunta, id_usuario, no_resposta) VALUES ('{$idPergunta}', '{$idUsuario}', '{$resposta}');";
         $result = mysqli_query($this->conexao->getConn(), $sql);
         
         if ($result) {
@@ -178,7 +178,7 @@ class UserDAO
         }
 
         foreach ($dados AS $key => $pergunta) {
-            $dados[$key]['respostas'] = $this->getRespostasByPergunta($pergunta['id_pergunta']);
+            $dados[$key]['no_respostas'] = $this->getRespostasByPergunta($pergunta['id_pergunta']);
         }
 
         return $dados;
@@ -222,7 +222,7 @@ class UserDAO
         $this->id = $id;
         $this->pergunta = $pergunta;
 
-        $sql = "UPDATE perguntas SET pergunta = '{$this->pergunta}' WHERE id_pergunta = '{$this->id}';";
+        $sql = "UPDATE perguntas SET no_pergunta = '{$this->pergunta}' WHERE id_pergunta = '{$this->id}';";
         $result = mysqli_query($this->conexao->getConn(), $sql);
 
         if ($result) {
@@ -234,11 +234,11 @@ class UserDAO
         }
     }
 
-    public function excluirMsg($id)
+    public function excluirMsg($idPergunta)
     {
-        $this->id_pergunta = $id;
+        $this->id = $idPergunta;
 
-        $sql = "DELETE FROM perguntas WHERE id_pergunta = '{$id}';";
+        $sql = "DELETE FROM perguntas WHERE id_pergunta = '{$idPergunta}';";
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao excluir o registro")</script>');
 
         if ($result) {

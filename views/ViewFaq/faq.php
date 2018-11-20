@@ -84,7 +84,6 @@
                <form id="form-cad-msg" class="container" id="needs-validation">
                     <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
                     <input type="hidden" name="action" value="">
-                    
                     <div id="msg-valida"></div>
                         <textarea class="form-control" rows="5" style="resize:none" id="pergunta" name="pergunta" cols="50" rows="15" placeholder="Digite sua dúvida sobre qualquer assunto..."></textarea>
                     <br>
@@ -94,8 +93,6 @@
         </li>
         </ul>
     <br>
-
-
 
         <!-- CADASTRAR PERGUNTAS 
         <div class="faq-textarea">
@@ -115,7 +112,6 @@
         </div> -->
 
      <!-- LISTAR PERGUNTAS -->
-    
         <ul id="basics" class="cd-faq-group">
         <li class="cd-faq-title">
             <h2>Perguntas</h2>
@@ -123,7 +119,7 @@
         <?php //echo '<pre>'; print_r($dados); ?>
             <?php foreach ($dados as $key => $value): ?>
                 <li>
-                    <a class="cd-faq-trigger" href="#0"><?php echo $value['pergunta']; ?></a>
+                    <a class="cd-faq-trigger" href="#0"><?php echo $value['no_pergunta']; ?></a>
                     <div class="cd-faq-content">
                         <form class="container form-cad-resposta">
                             <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
@@ -136,8 +132,8 @@
                             </div>
                             <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
                             <hr>
-                            <?php foreach ($value['respostas'] as $resposta ): ?>
-                                <a class="resposta-grid" href="#0"><?php echo $resposta['resposta']; ?></a><hr>                                
+                            <?php foreach ($value['no_respostas'] as $resposta ): ?>
+                                <a class="resposta-grid" href="#0"><?php echo $resposta['no_resposta']; ?></a><hr>                                
                             <?php endforeach; ?>
                         </form>
                     </div>                  
@@ -149,8 +145,7 @@
         <!-- cd-faq-items -->
         <a href="#0" class="cd-close-panel">Close</a>
     </section>   
-    
-    <!-- <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.3/dist/semantic.min.js"></script> -->
+
     <script type="text/javascript" src="../js/tinymce/tinymce4.min.js"></script>
     <script src="../js/jquery-2.1.1.js"></script>
     <!-- <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script> -->
@@ -221,7 +216,7 @@
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
-                        alert('Pergunta cadastrada com Sucesso!');
+                        //alert('Pergunta cadastrada com Sucesso!');
                         toastr.success("Pergunta cadastrada com Sucesso!");
                         $('#form-cad-msg')[0].reset()
                         //window.location.href = '../ViewFaq/faq.php';
@@ -267,7 +262,7 @@
                 dataType: 'json',
                 success: function(json) {
                     if (json.type == 'success') {
-                        alert('Resposta cadastrada com Sucesso!');
+                        //alert('Resposta cadastrada com Sucesso!');
                         toastr.success("Resposta cadastrada com Sucesso!");
                         $('#form-cad-resposta')[0].reset()
                         //window.location.href = '../ViewFaq/faq.php';

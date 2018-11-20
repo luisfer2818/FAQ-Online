@@ -175,7 +175,7 @@ header h1 {
         display: none;
     }
     .no-touch .cd-faq-categories a:hover {
-        background: #555b61;
+        background: #000;
     }
     .no-js .cd-faq-categories {
         width: 100%;

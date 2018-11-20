@@ -70,12 +70,6 @@
     <!--=========================================================-->
     <div id="tab-visualiza-msg" style="display:none;">
         <p class="text-p"> Perguntas</p>
-        <form id="form-grid-perguntas">
-             <input type="hidden" name="action" value="">
-             <input type="text">
-             <button type="submit">TESTE</button>
-        </form>
-        <div id="show-table-pergunta"></div>
         <table class="ui padded table">
             <thead>
                 <tr>
@@ -89,7 +83,24 @@
                 <tr data-id="<?php echo $value['id_pergunta']?>">
                     <!-- <td>#<?php //echo $value['id']; ?></td> -->
                     <!-- <td class="about" data-name="nome"><?php //echo $value['nome']; ?></td> -->
-                    <td class="about" data-name="pergunta" style="text-align: left;"><?php echo $value['pergunta']; ?></td>
+
+<?php //echo '<pre>'; print_r($dados)?>
+                <div class="ui styled fluid accordion">
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    <?php echo $value['no_pergunta']; ?>
+                </div>
+                <div class="content">
+                <?php foreach ($value['no_respostas'] as $resposta) : ?>
+                    <p class="transition hidden"> <?php echo $resposta['no_resposta']; ?></p>
+                                                                 
+                    <?php endforeach; ?>
+                                     
+                </div>          
+                </div>
+
+
+                    <td class="about" data-name="pergunta" style="text-align: left;"><?php echo $value['no_pergunta']; ?></td>
                     <td>
                         <button class="tiny ui blue button btn-editar-msg"><i class="fa fa-pencil" aria-hidden="true"></i> Editar</button> 
                         <button class="tiny ui red button btn-excluir-msg" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
@@ -261,8 +272,9 @@
 
     //FUNCÃO QUE MOSTRA A SENHA NO INPUT
     $(document).ready(function() {
+        $('.ui.accordion').accordion();
 
-        function validar(){
+        /*function validar(){
             var senha = formuser.senha.value;
             var rep_senha = formuser.rep_senha.value;
             
@@ -283,7 +295,7 @@
                 formuser.senha.focus();
                 return false;
             }
-        }
+        }*/
 
         $('[href="#tab-visualiza-msg"]').click();
         $('#showPassword-admin, #showPassword').on('click', function(){
@@ -439,12 +451,12 @@
         });
     });
     
-    //EXCLUIR MENSAGEM
+    //EXCLUIR PERGUNTA
     $('.btn-excluir-msg').unbind('click').click(function(e) {
         e.preventDefault();
         var idMsg = $(e.target).closest('tr').attr('data-id');
 
-        console.log(idMsg);
+        //console.log(idMsg);
 
         $.ajax({
             type: 'POST',
@@ -477,6 +489,11 @@
                     $('.alert-success strong').html(json.msg);
                     $('#form-perfil-admin')[0].reset()
                     $('#form-perfil-admin .fa-check').css('display', 'block')
+                    setTimeout(() => {
+								$('#tab-usuario-admin').css('display', 'none');
+								$('#tab-usuario').css('display', 'block');
+                                $('.alert-success').css('display', 'none');
+							}, 2000);
                 } else {
                     $('.alert-success').addClass('alert-danger');
                     $('.alert-danger').removeClass('alert-success');
