@@ -12,6 +12,7 @@ class UserDAO
     private $pergunta;
     private $idPergunta;
     private $resposta;
+    //private $idResposta;
 
     private $email;
     private $senha;
@@ -246,6 +247,22 @@ class UserDAO
             exit;
         } else {
             echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar excluir Pergunta']);
+            exit;
+        }
+    }
+
+    public function excluirResp($id)
+    {
+        $this->id = $id;
+
+        $sql = "DELETE FROM respostas WHERE id_resposta = '{$id}';";
+        $result = mysqli_query($this->conexao->getConn(), $sql) or die('<script>alert("Falha ao excluir o registro")</script>');
+
+        if ($result) {
+            echo json_encode(['type' => 'success', 'msg' => 'Excluído com sucesso']);
+            exit;
+        } else {
+            echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar excluir Resposta']);
             exit;
         }
     }

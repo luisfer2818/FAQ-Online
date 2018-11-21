@@ -54,6 +54,11 @@ switch ($action) {
         $model->excluirMsg($id);
     break;
 
+    case 'excluirResp':
+        $id = $_POST['id'];
+        $model->excluirResp($id);
+    break;
+
     case 'excluirUser':
         $id = $_POST['id'];
         $model->excluirUser($id);

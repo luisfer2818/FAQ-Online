@@ -69,8 +69,8 @@
                         <!--LISTAR PERGUNTAS-->
     <!--=========================================================-->
     <div id="tab-visualiza-msg" style="display:none;">
-        <p class="text-p"> Perguntas</p>
-        <table class="ui padded table">
+        <p class="text-p"> Perguntas e Respostas</p>
+        <table class="table">
             <thead>
                 <tr>
                     <!-- <th>Nome</th> -->
@@ -80,25 +80,22 @@
             </thead>
             <tbody>
                 <?php foreach ($dados as $key => $value): ?>
-                <tr data-id="<?php echo $value['id_pergunta']?>">
+                <tr data-id="<?php echo $value['id_pergunta']; echo $value['id_resposta']?>">
                     <!-- <td>#<?php //echo $value['id']; ?></td> -->
-                    <!-- <td class="about" data-name="nome"><?php //echo $value['nome']; ?></td> -->
 
-<?php //echo '<pre>'; print_r($dados)?>
-                <div class="ui styled fluid accordion">
-                <div class="title">
-                    <i class="dropdown icon"></i>
-                    <?php echo $value['no_pergunta']; ?>
-                </div>
-                <div class="content">
-                <?php foreach ($value['no_respostas'] as $resposta) : ?>
-                    <p class="transition hidden"> <?php echo $resposta['no_resposta']; ?></p>
-                                                                 
-                    <?php endforeach; ?>
-                                     
-                </div>          
-                </div>
-
+                    <?php //echo '<pre>'; print_r($dados); ?>
+                    <div class="ui styled fluid accordion">
+                        <div class="title align-div">
+                            <i class="dropdown icon"></i>
+                            <?php echo $value['no_pergunta']; ?>
+                        </div>
+                        <div id="align-text" class="content">
+                        <?php foreach ($value['no_respostas'] as $resposta): ?>
+                            <p class="transition hidden"><i class="fa fa-arrow-right" aria-hidden="true"></i> <?php echo $resposta['no_resposta']; ?></p><hr>
+                            <button class="tiny ui red button btn-excluir-resp" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>                                                             
+                        <?php endforeach; ?>                                 
+                        </div>          
+                    </div>
 
                     <td class="about" data-name="pergunta" style="text-align: left;"><?php echo $value['no_pergunta']; ?></td>
                     <td>
@@ -120,8 +117,8 @@
         <div class="ui primary button" id="botao-novo" data-content="Cadastrar novo administrador">
             <i class="fa fa-plus" aria-hidden="true"></i> Novo
         </div>
-        <table class="ui padded table">
-            <thead>
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
                     <!-- <th>Id</th> -->
                     <th scope="col">Nome</th>
@@ -270,9 +267,33 @@
 
 <script>
 
-    //FUNCÃO QUE MOSTRA A SENHA NO INPUT
     $(document).ready(function() {
+        //CHAMANDO O ACORDION DO SEMANTIC
         $('.ui.accordion').accordion();
+
+        //MENSAGEM
+        function message(type, msg) {
+            if (msg) {
+                //CONFIG MENSAGEM
+                toastr.options = {
+                    // "closeButton": true,
+                    "closeButton": true,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "showDuration": "600",
+                    "progressBar": true,
+                    "hideDuration": "500",
+                    "timeOut": "8500",
+                    "extendedTimeOut": "1000",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    "positionClass": "toast-top-center",
+                }
+            }
+            //EXIBE MENSAGEM
+            Command:toastr[type]('<strong>'+msg+'</strong>');
+        }
 
         /*function validar(){
             var senha = formuser.senha.value;
@@ -343,8 +364,8 @@
             dataType: 'json',
             success: function(json) {
                 if (json.type == 'success') {
+                    return message('success', json.msg);
                     //window.location.href = 'template.php';
-                    console.log(json);
                 }
             }
         });
@@ -364,7 +385,7 @@
             dataType: 'json',
             success: function(json) {
                 if (json.type == 'success') {
-                   console.log(json);
+                   //console.log(json);
                 }
             }
         });
@@ -468,6 +489,26 @@
             dataType: 'json',
             success: function(json) {
                 $(e.target).closest('tr').hide()
+            }
+        });
+    });
+
+     //EXCLUIR RESPOSTA
+    $('.btn-excluir-resp').unbind('click').click(function(e) {
+        e.preventDefault();
+        var idMsg = $(e.target).closest('tr').attr('data-id');
+
+        $.ajax({
+            type: 'POST',
+            url: $('.btn-excluir-resp').attr('action'),
+            data: {
+                id: idMsg,
+                action: 'excluirResp'
+            },
+            dataType: 'json',
+            success: function(json) {
+                $(e.target).closest('tr').hide()
+                return message('success', json.msg);
             }
         });
     });

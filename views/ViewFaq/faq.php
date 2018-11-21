@@ -28,7 +28,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../vendor/font-awesome/fontawesome-all.css">
 
-    <link rel="stylesheet" type="text/css" href="../../vendor/toastr/jquery.toast.css">
+    <link rel="stylesheet" type="text/css" href="../../vendor/toastr/jquery.toast.min.css">
 
     <link rel="stylesheet" type="text/css" href="../css/faq.css">
 
@@ -36,7 +36,7 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/> -->
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
     <!-- CSS reset -->
@@ -150,12 +150,10 @@
     <script src="../js/jquery-2.1.1.js"></script>
     <!-- <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script> -->
     <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../vendor/toastr/jquery.toast.js"></script>
+    <script src="../../vendor/toastr/jquery.toast.min.js"></script>
     <script src="../js/jquery.mobile.custom.min.js"></script>
     <script src="../js/main.js"></script>
-
-    <!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script> -->
     <!-- SCRIPT DA PAGINA -->
     <?php include '../Template/loader.php'; ?>
     <!-- FIM SCRIPT -->
@@ -164,14 +162,38 @@
 
         //CONFIGURAÇÃO DO TOASTR(POPUP -> NOTIFICAÇÃO)
         $(document).ready(function() {
-            toastr.options.timeOut = 5000; // 1.5s
+
+        //MENSAGEM
+        function message(type, msg) {
+            if (msg) {
+                //CONFIG MENSAGEM
+                toastr.options = {
+                    //"closeButton": true,
+                    "closeButton": true,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "showDuration": "600",
+                    "progressBar": true,
+                    "hideDuration": "500",
+                    "timeOut": "5500",
+                    "extendedTimeOut": "1000",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    "positionClass": "toast-top-center",
+                }
+            }
+            //EXIBE MENSAGEM
+            Command:toastr[type]('<strong>'+msg+'</strong>');
+        }
+
+            /*toastr.options.timeOut = 5000; // 1.5s
             toastr.options.showMethod = 'slideDown';
             toastr.options.hideMethod = 'slideUp';
             toastr.options.closeMethod = 'slideUp';
-            toastr.options.closeButton = true;
+            toastr.options.closeButton = true;*/
             //toastr.options.positionClass = "toast-center";
             //toastr.info('Seja Bem Vindo! ');
-        });
 
         // FUNÇÃO QUE FAZ O EFEITO DE ESCREVENDO NA TELA
         function typeWriter(elemento) {
@@ -189,7 +211,7 @@
            mode : "textareas"
         });
 
-         //CADASTRAR PERGUNTA
+        //CADASTRAR PERGUNTA
         $('#form-cad-msg').unbind('submit').submit(function(e) {
             e.preventDefault();
             $('[name="action"]').val('inserirMsg');
@@ -217,14 +239,13 @@
                 success: function(json) {
                     if (json.type == 'success') {
                         //alert('Pergunta cadastrada com Sucesso!');
-                        toastr.success("Pergunta cadastrada com Sucesso!");
+                        //toastr.success("Pergunta cadastrada com Sucesso!");                    
                         $('#form-cad-msg')[0].reset()
+                        return message('success', json.msg);
                         //window.location.href = '../ViewFaq/faq.php';
                     } else {
-                        toastr.error("Error ao cadastrar Pergunta!");
-                        /*$('.alert-danger').css('display', 'block');
-                        $('.alert-danger').html(json.msg);
-                        tiraMsg()*/
+                        //toastr.error("Error ao cadastrar Pergunta!");
+                         return message('error', json.msg);
 					}
                 }
             });
@@ -233,6 +254,7 @@
                     $('.alert-danger').css('display', 'none')
                 }, 3000);
             }
+            
         });
 
         //CADASTRAR RESPOSTA
@@ -241,17 +263,11 @@
             $('[name="action"]').val('inserirResp');
             $('[name="respostas"]').val(tinyMCE.activeEditor.getContent());
 
-            let dadosForm = $('#form-cad-resposta').serialize();
+            let dadosForm = $('.form-cad-resposta').serialize();
             let resposta = $('#resposta-text').val();
 
             if (!resposta){
-                $('#msg-valida').html(`
-                    <div class="alert alert-danger" role="alert">                  
-                        <i class="fa fa-exclamation-circle"></i> <strong> Campo Resposta Vazio! </strong>
-                    </div>                        
-                `);
-                tiraMsg()
-                return false;
+               return message('error', 'Campo resposta vazio!');
             }
             
             //MANDA O AJAX DE RESPOSTA
@@ -263,11 +279,13 @@
                 success: function(json) {
                     if (json.type == 'success') {
                         //alert('Resposta cadastrada com Sucesso!');
-                        toastr.success("Resposta cadastrada com Sucesso!");
-                        $('#form-cad-resposta')[0].reset()
+                        //toastr.success("Resposta cadastrada com Sucesso!");
+                        $('.form-cad-resposta')[0].reset()
+                        return message('success', json.msg);
                         //window.location.href = '../ViewFaq/faq.php';
                     } else {
-                        toastr.error("Error ao cadastrar Resposta!");
+                        //toastr.error("Error ao cadastrar Resposta!");
+                        return message('error', json.msg);
                         /*$('.alert-danger').css('display', 'block');
                         $('.alert-danger').html(json.msg);
                         tiraMsg()*/
@@ -280,6 +298,7 @@
                 }, 3000);
             }
         });
+    });
 
     </script>
 </body>
