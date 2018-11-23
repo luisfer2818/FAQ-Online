@@ -21,7 +21,7 @@
 
 <div id="loader" class="ui segment">
       <p></p>
-      <div class="ui active dimmer">
+            <div class="ui active dimmer">
             <div class="ui loader"></div>
       </div>
 </div>

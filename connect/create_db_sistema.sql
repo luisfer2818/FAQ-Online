@@ -53,10 +53,12 @@ alter table respostas modify no_resposta;
 
 alter table usuario ADD id_usuario_tipo int;
 
-DROP table IF EXISTS  `perguntas`;
+DROP table IF EXISTS  `respostas`;
 DROP table usuario_tipo;
 SELECT * FROM usuario;
 SELECT * FROM perguntas;
 SELECT * FROM respostas;
 SELECT * FROM usuario_tipo;
+
+DELETE FROM respostas WHERE id_resposta = 53;
 

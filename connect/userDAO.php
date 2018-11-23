@@ -227,7 +227,7 @@ class UserDAO
         $result = mysqli_query($this->conexao->getConn(), $sql);
 
         if ($result) {
-            echo json_encode(['type' => 'success', 'msg' => 'Editado com sucesso']);
+            echo json_encode(['type' => 'success', 'msg' => 'Pergunta editada com sucesso']);
             exit;
         } else {
             echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar editar Pergunta']);
@@ -243,7 +243,7 @@ class UserDAO
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao excluir o registro")</script>');
 
         if ($result) {
-            echo json_encode(['type' => 'success', 'msg' => 'Excluído com sucesso']);
+            echo json_encode(['type' => 'success', 'msg' => 'Pergunta excluída com sucesso']);
             exit;
         } else {
             echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar excluir Pergunta']);
@@ -275,7 +275,7 @@ class UserDAO
         $result = mysqli_query($this->conexao->getConn(), $sql) or die('<script>alert("Falha ao excluir o registro")</script>');
 
         if ($result) {
-            echo json_encode(['type' => 'success', 'msg' => 'Excluído com sucesso']);
+            echo json_encode(['type' => 'success', 'msg' => 'Usuário excluído com sucesso']);
             exit;
         } else {
             echo json_encode(['type' => 'error', 'msg' => 'Erro ao tentar excluir cadastro']);

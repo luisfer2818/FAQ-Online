@@ -25,6 +25,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HOME | FAQ ONLINE</title>
     <link rel="icon" type="image/png" href="/images/faq.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
 <!-- =====LINK MENU CSS =====-->
@@ -45,7 +46,7 @@
             <form id="form-cad-msg" class="container" id="needs-validation">
                 <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
                 <input type="hidden" name="action" value="">
-                <div id="msg-valida"></div>
+                <!-- <div id="msg-valida"></div> -->
                 <fieldset>
                     <legend style="width:auto; font-size: 1.3em; color: black; font-weight: bolder;">Dados</legend>
                 <div class="form-group">
@@ -69,7 +70,7 @@
                         <!--LISTAR PERGUNTAS-->
     <!--=========================================================-->
     <div id="tab-visualiza-msg" style="display:none;">
-        <p class="text-p"> Perguntas e Respostas</p>
+        <p class="text-p"> Perguntas</p>
         <table class="table">
             <thead>
                 <tr>
@@ -83,6 +84,7 @@
                 <tr data-id="<?php echo $value['id_pergunta']; echo $value['id_resposta']?>">
                     <!-- <td>#<?php //echo $value['id']; ?></td> -->
 
+                    <!-- ACCORDION SEMANTIC 
                     <?php //echo '<pre>'; print_r($dados); ?>
                     <div class="ui styled fluid accordion">
                         <div class="title align-div">
@@ -96,6 +98,7 @@
                         <?php endforeach; ?>                                 
                         </div>          
                     </div>
+                     FIM ACCORDION -->
 
                     <td class="about" data-name="pergunta" style="text-align: left;"><?php echo $value['no_pergunta']; ?></td>
                     <td>
@@ -110,15 +113,16 @@
     </div>
 
     <!--=========================================================-->
-                        <!--USUÁRIOS/ADMIN-->
+                    <!--LISTAR USUÁRIO/ADMINISTRADOR-->
     <!--=========================================================-->
     <div id="tab-usuario" style="display:none;">
         <p class="text-p">Usuários</p>
         <div class="ui primary button" id="botao-novo" data-content="Cadastrar novo administrador">
             <i class="fa fa-plus" aria-hidden="true"></i> Novo
         </div>
+        <br><br>
         <table class="table">
-            <thead class="thead-dark">
+            <thead>
                 <tr>
                     <!-- <th>Id</th> -->
                     <th scope="col">Nome</th>
@@ -132,10 +136,10 @@
                      $usuarioTipo = $value['usuario_tipo'];
 
                     if ($usuarioTipo == 'A') {
-                        $nomeTipoUsuario = 'Administrador';
+                        $nomeTipoUsuario = '<b style="color:#fff;">Administrador</b>';
                         $tipoUsuarioCor = 'black';
                     } else {
-                        $nomeTipoUsuario = 'Usuário';
+                        $nomeTipoUsuario = '<b style="color:#fff;">Usuário</b>';
                         $tipoUsuarioCor = 'blue';
                     } 
                 ?>
@@ -153,17 +157,6 @@
             </tbody>
         </table>
     </div>
-
-    <!-- ''MODAL EXEMPLO''  <div class="ui mini modal" id="modal-excluir" style="display: none;">
-        <div class="header">
-            Deseja realmente excluir?
-        </div>
-        <div class="ui buttons">
-            <button class="ui button">Cancelar</button>
-        <div class="or" data-text="ou"></div>
-            <button class="ui positive button">Salvar</button>
-        </div>
-    </div> -->
 
     <!--=========================================================-->
                         <!--ADMINISTRADOR-->
@@ -188,11 +181,11 @@
                     <legend style="width:auto; font-size: 1.3em; color: black; font-weight: bolder;">Dados</legend>
                     <div class="form-group">
                         <label>Nome:</label>
-                        <input type="text" class="form-control" name="nome" value="">
+                        <input type="text" class="form-control" id="admin-nome" name="nome" value="">
                     </div>
                     <div class="form-group">
                         <label>E-mail:</label>
-                        <input type="text" class="form-control" name="email" value="">
+                        <input type="text" class="form-control" id="admin-email" name="email" value="">
                     </div>
                     <div class="form-group">
                         <label>Senha:</label>
@@ -202,14 +195,14 @@
                             <a type="button" id="showPassword-admin" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                     <div class="form-group">
+                     <!-- <div class="form-group">
                         <label>Confirme sua senha:</label>
                         <div class="ui fluid action input">
                             <input type="password" class="form-control" id="admin-password" name="rep-senha">
                             <input type="hidden" class="form-control" name="senhaAntiga">                       
                             <a type="button" id="admin-showPassword" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
-                    </div>
+                    </div> -->
                     <button class="positive ui button" type="submit" onClick="validar()"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
                 </fieldset>
             </form>
@@ -225,7 +218,7 @@
                 <form id="form-perfil" class="container" id="needs-validation">
                     <input type="hidden" name="id" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
                     <input type="hidden" name="action" value="">
-                    <div class="alert alert-success" style="display: none;">
+                    <div class="alert alert-success" style="display:none;">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -260,9 +253,9 @@
                     <!--FIM CONTEÚDO-->
 <!--=========================================================-->
 
-
 <!-- SCRIPT DA PAGINA -->
 <?php include '../views/Template/script.php'; ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- FIM SCRIPT -->
 
 <script>
@@ -271,19 +264,19 @@
         //CHAMANDO O ACORDION DO SEMANTIC
         $('.ui.accordion').accordion();
 
-        //MENSAGEM
+        //MENSAGEM TOASTR
         function message(type, msg) {
             if (msg) {
                 //CONFIG MENSAGEM
                 toastr.options = {
-                    // "closeButton": true,
+                    //"closeButton": true,
                     "closeButton": true,
                     "newestOnTop": true,
                     "progressBar": true,
                     "showDuration": "600",
                     "progressBar": true,
                     "hideDuration": "500",
-                    "timeOut": "8500",
+                    "timeOut": "4500",
                     "extendedTimeOut": "1000",
                     "hideEasing": "linear",
                     "showMethod": "fadeIn",
@@ -294,29 +287,6 @@
             //EXIBE MENSAGEM
             Command:toastr[type]('<strong>'+msg+'</strong>');
         }
-
-        /*function validar(){
-            var senha = formuser.senha.value;
-            var rep_senha = formuser.rep_senha.value;
-            
-            if(senha == "" || senha.length <= 5){
-                alert('Preencha o campo senha com minimo 6 caracteres');
-                formuser.senha.focus();
-                return false;
-            }
-            
-            if(rep_senha == "" || rep_senha.length <= 5){
-                alert('Preencha o campo senha com minimo 6 caracteres');
-                formuser.rep_senha.focus();
-                return false;
-            }
-            
-            if (senha != rep_senha) {
-                alert('Senhas diferentes');
-                formuser.senha.focus();
-                return false;
-            }
-        }*/
 
         $('[href="#tab-visualiza-msg"]').click();
         $('#showPassword-admin, #showPassword').on('click', function(){
@@ -342,21 +312,13 @@
         $('[name="action"]').val('inserirMsg');
 
         let dadosForm = $(this).serialize();
-        //console.log(dadosForm);
         let pergunta = $('#pergunta').val();
 
-        if (!pergunta){
-            $('#msg-valida').html(`
-                <div class="alert alert-danger" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <i class="fa fa-exclamation-circle"></i> <strong> Campo Pergunta obrigatório! </strong>
-                </div>                        
-            `);
-            return false;
+         if (!pergunta){
+            return message('error', 'Campo pergunta vazio!');
         }
 
+       //MANDA O AJAX DE PERGUNTA
         $.ajax({
             type: 'POST',
             url: '../controller/crud.php',
@@ -364,8 +326,16 @@
             dataType: 'json',
             success: function(json) {
                 if (json.type == 'success') {
+                    //toastr.success("Pergunta cadastrada com Sucesso!");                    
+                    $('#form-cad-msg')[0].reset();
+                    setTimeout(() => {
+                        window.location.href = './template.php';
+                    }, 4500);
                     return message('success', json.msg);
-                    //window.location.href = 'template.php';
+                    //window.location.href = './faq.php';
+                } else {
+                    //toastr.error("Error ao cadastrar Pergunta!");
+                    return message('error', json.msg);
                 }
             }
         });
@@ -385,7 +355,10 @@
             dataType: 'json',
             success: function(json) {
                 if (json.type == 'success') {
-                   //console.log(json);
+                   setTimeout(() => {
+                        window.location.href = './template.php';
+                    }, 4500);
+                    return message('success', json.msg);
                 }
             }
         });
@@ -396,6 +369,11 @@
         e.preventDefault();
         $('[name="action"]').val('editarUser');
         let dadosForm = $(this).serialize();
+        let senha_admin = $('#password').val();
+
+         if (!senha_admin){
+            return message('error', 'Campo senha vazio!');
+        }
 
         $.ajax({
             type: 'POST',
@@ -403,14 +381,15 @@
             data: $(this).serialize(),
             dataType: 'json',
             success: function(json) {
-                if (json.type == 'success') {
-                    $('.alert-success').css('display','block');
-                    $('.alert-success strong').html(json.msg);
+                if (json.type == 'success') {                
                     $('[name="senhaAntiga"]').val(json.senha);
+                    return message('success', json.msg);
+                } else {
+                    return message('error', json.msg);
+                    }            
                 }
-            }
+            });
         });
-    });
 
     //EDITAR PERGUNTA
     $('.btn-editar-msg').unbind('click').click(function(e) {
@@ -465,8 +444,10 @@
                     //DISABLE NO INPUT APÓS SALVAR
                     $inputsDaTr.closest('.field').css('opacity', '0.4');
                     $($trClicadaQuandoSalvar).find('.btn-save-msg').css('opacity', '0.4');
-
-                    window.location.href = 'template.php';
+                    setTimeout(() => {
+                        window.location.href = './template.php';
+                    }, 4500);
+                    return message('success', json.msg);
                 }
             }
         });
@@ -488,7 +469,12 @@
             },
             dataType: 'json',
             success: function(json) {
-                $(e.target).closest('tr').hide()
+                if (json.type == 'success') {
+                    $(e.target).closest('tr').hide()
+                    return message('success', json.msg);
+                } else {
+                    return message('error', json.msg);
+                }
             }
         });
     });
@@ -507,8 +493,10 @@
             },
             dataType: 'json',
             success: function(json) {
+                if (json.type == 'success') {
                 $(e.target).closest('tr').hide()
                 return message('success', json.msg);
+                }
             }
         });
     });
@@ -518,6 +506,15 @@
         e.preventDefault();
         
         $('[name="action"]').val('inserirUserAdmin');
+        let nome = $('#admin-nome').val();
+        let email = $('#admin-email').val();
+
+        if (!nome){
+            return message('error', 'Campo nome vazio!');
+        }
+        if (!email){
+            return message('error', 'Campo e-mail vazio!');
+        }
 
         $.ajax({
             method:'POST',
@@ -525,31 +522,17 @@
             data: $(this).serialize(),
             dataType:'json',
             success: function(json) {
-                if (json.type == 'success') {
-                    $('.alert-success').css('display', 'block');
-                    $('.alert-success strong').html(json.msg);
+                if (json.type == 'success') { 
                     $('#form-perfil-admin')[0].reset()
-                    $('#form-perfil-admin .fa-check').css('display', 'block')
                     setTimeout(() => {
-								$('#tab-usuario-admin').css('display', 'none');
-								$('#tab-usuario').css('display', 'block');
-                                $('.alert-success').css('display', 'none');
-							}, 2000);
+                            window.location.href = './template.php';
+                        }, 4500);                             
+                   return message('success', json.msg);
                 } else {
-                    $('.alert-success').addClass('alert-danger');
-                    $('.alert-danger').removeClass('alert-success');
-                    $('.alert-danger').css('display', 'block');
-                    $('#form-perfil-admin .fa-check').css('display', 'none')
-                    $('.alert-danger strong').html(json.msg);
-                    tiraMsg()
+                   return message('error', json.msg);
                 }                        
             }
         })
-        function tiraMsg (){
-            setTimeout(() => {
-                $('.alert-danger').css('display', 'none')
-            }, 3000);
-        }
     });
 
     //EXCLUIR USUARIO
@@ -566,8 +549,13 @@
             },
             dataType: 'json',
             success: function(json) {
-                $(e.target).closest('tr').hide()
-            }
+                if (json.type == 'success') {
+                    $(e.target).closest('tr').hide()
+                    return message('success', json.msg);
+                } else {
+                    return message('error', json.msg);
+                    }
+                }
             });
         });
     });
@@ -600,6 +588,7 @@
     $('#botao-voltar').click(function(){
         $('#tab-usuario').css('display', 'block');
         $('#tab-usuario-admin').hide();
+        $('#form-perfil-admin')[0].reset();
     });
 
      //TAB-USUARIO
@@ -634,16 +623,6 @@
         $('#tab-usuario-admin').hide();
         $('#tab-visualiza-msg').hide();
     });
-
-     /*function validarSenha(){
-        password-admin = document.getElementById('password-admin').value;
-        admin-password = document.getElementById('admin-password').value;
-        if (password-admin != admin-password) {
-            alert("SENHAS DIFERENTES!\nFAVOR DIGITAR SENHAS IGUAIS"); 
-        }else{
-            document.FormSenha.submit();
-        }
-    }*/
 
 </script>
 
