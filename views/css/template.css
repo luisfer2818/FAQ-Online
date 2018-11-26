@@ -299,3 +299,7 @@ textarea {
 .align-div {
     text-align: left !important;
 }
+
+.button-modal {
+    font-size: 1.2em;
+}

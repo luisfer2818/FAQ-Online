@@ -121,14 +121,14 @@
             <i class="fa fa-plus" aria-hidden="true"></i> Novo
         </div>
         <br><br>
-        <table class="table">
+        <table class="ui very basic table">
             <thead>
                 <tr>
                     <!-- <th>Id</th> -->
-                    <th scope="col">Nome</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col">Tipo Usúario</th>
-                    <th scope="col">Ações</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Tipo Usúario</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
@@ -144,13 +144,32 @@
                     } 
                 ?>
                 <tr data-id="<?php echo $value['id_usuario'] ?>">
-                    <!-- <td>#<?php //echo $value['id']; ?></td> -->
+                <!--=========================================================-->
+                                    <!--JANELA MODAL-->
+                <!--=========================================================-->
+                    <div class="modal fade bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel"><b class="button-modal">Deseja realmente Excluir?</b></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>
+                                <button type="button" class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIM MODAL -->
+
                     <td class="about" data-name="nome"><?php echo $value['nome']; ?></td>
                     <td class="about" data-name="email"><?php echo $value['email']; ?></td>
                     <td class="about" data-name="tipo"><a class="ui <?php echo $tipoUsuarioCor; ?> label"><?php echo $nomeTipoUsuario; ?> </a></td>
                     <td>
-                        <button class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
-                        <!-- <button class="tiny ui green button" id="botao-modal"> Modal </button> -->
+                        <button class="tiny ui red button" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -195,15 +214,15 @@
                             <a type="button" id="showPassword-admin" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
                     </div>
-                     <!-- <div class="form-group">
+                      <div class="form-group">
                         <label>Confirme sua senha:</label>
                         <div class="ui fluid action input">
                             <input type="password" class="form-control" id="admin-password" name="rep-senha">
                             <input type="hidden" class="form-control" name="senhaAntiga">                       
                             <a type="button" id="admin-showPassword" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
-                    </div> -->
-                    <button class="positive ui button" type="submit" onClick="validar()"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
+                    </div>
+                    <button class="positive ui button" type="submit" ><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
                 </fieldset>
             </form>
         </div>
@@ -263,6 +282,11 @@
     $(document).ready(function() {
         //CHAMANDO O ACORDION DO SEMANTIC
         $('.ui.accordion').accordion();
+
+        //ABRIR JANELA MODAL DO BOOTSTRAP
+        $('#myModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        })
 
         //MENSAGEM TOASTR
         function message(type, msg) {
@@ -516,6 +540,16 @@
             return message('error', 'Campo e-mail vazio!');
         }
 
+        var password = document.getElementById("password-admin"), confirm_password = document.getElementById("admin-password");
+
+        function validatePassword(){
+        if(password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("Senhas diferentes!");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+        }
+
         $.ajax({
             method:'POST',
             url: '../controller/crud.php',
@@ -527,9 +561,9 @@
                     setTimeout(() => {
                             window.location.href = './template.php';
                         }, 4500);                             
-                   return message('success', json.msg);
+                    return message('success', json.msg);
                 } else {
-                   return message('error', json.msg);
+                    return message('error', json.msg);
                 }                        
             }
         })

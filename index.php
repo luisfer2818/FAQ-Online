@@ -21,6 +21,9 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/toastr/jquery.toast.min.css">
+<!--===============================================================================================-->
+
 </head>
 <body>
 	
@@ -39,12 +42,12 @@
 				<span class="login100-form-title">
 					Login
 				</span>
-				<div class="alert alert-danger" style="display: none;">
+				<!-- <div class="alert alert-danger" style="display: none;"> -->
 					<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"> -->
                             		<!-- <span aria-hidden="true">&times;</span> -->
                         	<!-- </button> -->
-                        	<i class="fa fa-exclamation-circle"></i> <strong></strong>
-				</div>
+                        	<!-- <i class="fa fa-exclamation-circle"></i> <strong></strong> -->
+				<!-- </div> -->
 				<div class="wrap-input100 validate-input" data-validate = "Digite um e-mail">
 					<input class="input100" type="email" id="email" name="email" placeholder="E-mail">
 					<span class="focus-input100"></span>
@@ -89,28 +92,22 @@
 				<span class="login100-form-title">
 					Cadastro
 				</span>
-				<div class="alert alert-success" style="display: none;">
-					<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"> -->
-                            		<!-- <span aria-hidden="true">&times;</span> -->
-                        	<!-- </button> -->
-                        	<i class="fa fa-exclamation-circle"></i> <strong></strong>
-				</div>
 				<div class="wrap-input100 validate-input" data-validate = "Digite o nome">
-					<input class="input100" type="text" name="nome" placeholder="Nome">
+					<input class="input100" type="text" id="nome" name="nome" placeholder="Nome">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-user" aria-hidden="true"></i>
 					</span>
 				</div>
 				<div class="wrap-input100 validate-input" data-validate = "Digite algum e-mail">
-					<input class="input100" type="text" name="email" placeholder="E-mail" required>
+					<input class="input100" type="text" id="cad-email" name="email" placeholder="E-mail">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-envelope" aria-hidden="true"></i>
 					</span>
 				</div>
 				<div class="wrap-input100 validate-input" data-validate = "Digite alguma senha">
-					<input class="input100" type="password" name="senha" placeholder="Senha">
+					<input class="input100" type="password" id="cad-senha" name="senha" placeholder="Senha">
 					<span class="focus-input100"></span>
 					<span class="symbol-input100">
 						<i class="fa fa-lock" aria-hidden="true"></i>
@@ -141,14 +138,54 @@
 <!--===============================================================================================-->
 	<script src="vendor/tilt/tilt.jquery.min.js"></script>
 <!--===============================================================================================-->
+	<script src="vendor/toastr/jquery.toast.min.js"></script>
+<!--===============================================================================================-->
 	<script>
-		$(document).ready(function() {
-			$('.js-tilt').tilt({
-				scale: 1.2
-			});
+
+	$(document).ready(function() {
+		$('.js-tilt').tilt({
+			scale: 1.2
+		});
+
+	
+		//MENSAGEM - CONFIGURAÇÃO DO TOASTR(POPUP -> NOTIFICAÇÃO)
+		function message(type, msg) {
+			if (msg) {
+			//CONFIG MENSAGEM
+			toastr.options = {
+				//"closeButton": true,
+				"closeButton": true,
+				"newestOnTop": true,
+				"progressBar": true,
+				"showDuration": "600",
+				"progressBar": true,
+				"hideDuration": "500",
+				"timeOut": "3000",
+				"extendedTimeOut": "1000",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut",
+				"positionClass": "toast-top-center",
+			}
+			}
+			//EXIBE MENSAGEM
+			Command:toastr[type]('<strong>'+msg+'</strong>');
+		}
 
 			$('#form-login').unbind('submit').submit(function(e) {
 				e.preventDefault();
+
+				let email = $('#email').val();
+				let senha = $('#senha').val();
+
+				if (!email){
+				return message('error', 'Campo Email vazio!');
+				}
+				if (!senha){
+				return message('error', 'Campo Senha vazio!');
+				}
+				
+				//MANDA O AJAX DE LOGIN
 				$.ajax({
 					method:'POST',
 					url: 'controller/autentica.php',
@@ -163,18 +200,10 @@
 								window.location.href = "./views/ViewFaq/faq.php";
 							}
 						} else {
-							$('.alert-danger').css('display', 'block');
-							$('.alert-danger strong').html(json.msg);
-							tiraMsg()
+							return message('error', json.msg);
 						}
 					}
-				})
-
-				function tiraMsg (){
-					setTimeout(() => {
-						$('.alert-danger').css('display', 'none')
-					}, 3000);
-				}
+				})				
 			});
 
 			$('#form-cadastro').unbind('submit').submit(function(e) {
@@ -182,24 +211,35 @@
 				
 				$('[name="action"]').val('inserirUser');
 
+				let nome = $('#nome').val();
+				let email = $('#cad-email').val();
+				let senha = $('#cad-senha').val();
+
+				if (!nome){
+				return message('error', 'Campo Nome vazio!');
+				}
+				if (!email){
+				return message('error', 'Campo Email vazio!');
+				}
+				if (!senha){
+				return message('error', 'Campo Senha vazio!');
+				}
+
 				$.ajax({
 					method:'POST',
 					url: 'controller/crud.php',
 					data: $(this).serialize(),
 					dataType:'json',
 					success: function(json) {
-						if (json.type == 'success') {
-							$('.alert-success').css('display', 'block');
-							$('.alert-success strong').html(json.msg);
+						if (json.type == 'success') {							
 							$('#form-cadastro')[0].reset()
 							setTimeout(() => {
 								$('#cadastro').css('display', 'none');
 								$('#login').css('display', 'block');
-							}, 1500);							
+							}, 3200);	
+							return message('success', json.msg);						
 						} else {
-							$('.alert-success').addClass('alert-danger');
-							$('.alert-danger').removeClass('alert-danger');
-							$('.alert-danger strong').html(json.msg);
+							return message('error', json.msg);
 						}
 					}
 				})

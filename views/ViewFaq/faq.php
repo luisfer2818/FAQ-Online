@@ -84,7 +84,7 @@
                     <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
                     <input type="hidden" name="action" value="">
                     <!-- <div id="msg-valida"></div> -->
-                        <textarea class="form-control" rows="5" style="resize:none" id="pergunta" name="pergunta" cols="50" rows="15" placeholder="Digite sua dúvida sobre qualquer assunto..."></textarea>
+                        <textarea class="form-control" rows="5" style="resize:none" id="pergunta" name="pergunta" cols="150" rows="25" placeholder=""></textarea>
                     <br>
                     <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
                 </form>
@@ -113,8 +113,14 @@
                             </div>
                             <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
                             <hr>
-                            <?php foreach ($value['no_respostas'] as $resposta ): ?>
-                                <a class="resposta-grid" href="#0"><?php echo $resposta['no_resposta']; ?></a><hr>                                
+                            <?php foreach ($value['no_respostas'] as $resposta): ?>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-2"><b>Respostas:</b></div>
+                                        <div class="col-md-10"><a class="resposta-grid" href="#0"> <?php echo $resposta['no_resposta']; ?> </a></div>                               
+                                    </div>
+                                </div>               
+                                <hr>                               
                             <?php endforeach; ?>
                         </form>
                     </div>                  
@@ -129,7 +135,6 @@
 
     <script type="text/javascript" src="../js/tinymce/tinymce4.min.js"></script>
     <script src="../js/jquery-2.1.1.js"></script>
-    <!-- <script src="../../vendor/jquery/jquery-3.2.1.min.js"></script> -->
     <script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="../../vendor/toastr/jquery.toast.min.js"></script>
     <script src="../js/jquery.mobile.custom.min.js"></script>
