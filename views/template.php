@@ -144,27 +144,6 @@
                     } 
                 ?>
                 <tr data-id="<?php echo $value['id_usuario'] ?>">
-                <!--=========================================================-->
-                                    <!--JANELA MODAL-->
-                <!--=========================================================-->
-                    <div class="modal fade bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-sm" role="document">
-                            <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="exampleModalLabel"><b class="button-modal">Deseja realmente Excluir?</b></h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>
-                                <button type="button" class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- FIM MODAL -->
-
                     <td class="about" data-name="nome"><?php echo $value['nome']; ?></td>
                     <td class="about" data-name="email"><?php echo $value['email']; ?></td>
                     <td class="about" data-name="tipo"><a class="ui <?php echo $tipoUsuarioCor; ?> label"><?php echo $nomeTipoUsuario; ?> </a></td>
@@ -176,6 +155,27 @@
             </tbody>
         </table>
     </div>
+
+    <!--=========================================================-->
+                        <!--JANELA MODAL-->
+    <!--=========================================================-->
+        <div class="modal fade bd-example-modal-sm" id="exampleModal" data-id="<?php echo $value['id_usuario'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel"><b class="button-modal">Deseja realmente Excluir?</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>
+                    <button type="button" class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- FIM MODAL -->
 
     <!--=========================================================-->
                         <!--ADMINISTRADOR-->
@@ -209,17 +209,17 @@
                     <div class="form-group">
                         <label>Senha:</label>
                         <div class="ui fluid action input">
-                            <input type="password" class="form-control" id="password-admin" name="senha">
+                            <input type="password" class="form-control" id="senha-admin" name="senha">
                             <input type="hidden" class="form-control" name="senhaAntiga">                       
-                            <a type="button" id="showPassword-admin" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <a type="button" id="button-senha" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
                     </div>
                       <div class="form-group">
                         <label>Confirme sua senha:</label>
                         <div class="ui fluid action input">
-                            <input type="password" class="form-control" id="admin-password" name="rep-senha">
+                            <input type="password" class="form-control" id="conf-senha-admin" name="rep-senha">
                             <input type="hidden" class="form-control" name="senhaAntiga">                       
-                            <a type="button" id="admin-showPassword" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <a type="button" id="button-conf-senha" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <button class="positive ui button" type="submit" ><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
@@ -259,7 +259,7 @@
                             <div class="ui fluid action input">
                                 <input type="password" class="form-control" id="password" name="senha">
                                 <input type="hidden" class="form-control" name="senhaAntiga">                       
-                            <a type="button" id="showPassword-admin" class="ui button"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <a type="button" id="showPassword" class="ui button" value="Mostrar"><i class="fa fa-eye" aria-hidden="true"></i></a>
                         </div>
                         </div>
                         <button class="positive ui button" type="submit"><i class="fa fa-check" aria-hidden="true"></i> Salvar</button>
@@ -312,23 +312,73 @@
             Command:toastr[type]('<strong>'+msg+'</strong>');
         }
 
-        $('[href="#tab-visualiza-msg"]').click();
-        $('#showPassword-admin, #showPassword').on('click', function(){
+    // CAMPO VISUALIZAR SENHA (MEU PERFIL)
+    $('[href="#tab-visualiza-msg"]').click();
+        $('#showPassword').on('click', function(){
     
-        var passwordField = $('#password-admin, #password');
+        var passwordField = $('#password, #senha-admin, #conf-senha-admin');
         var passwordFieldType = passwordField.attr('type');
 
         if(passwordFieldType == 'password')
         {   
             passwordField.attr('type', 'text');
-            $('#showPassword-admin, #showPassword i').removeClass('fa-eye');
-            $('#showPassword-admin, #showPassword i').addClass('fa-eye-slash');
+            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye');
+            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye-slash');*/
+            $('#showPassword i').removeClass('fa-eye');
+            $('#showPassword i').addClass('fa-eye-slash');
         } else {
             passwordField.attr('type', 'password');
-            $('#showPassword-admin, #showPassword i').removeClass('fa-eye-slash');
-            $('#showPassword-admin, #showPassword i').addClass('fa-eye');
+            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye-slash');
+            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye');*/
+            $('#showPassword i').removeClass('fa-eye-slash');
+            $('#showPassword i').addClass('fa-eye');
         }
     });
+
+    // CAMPO VISUALIZAR SENHA (SENHA 1)
+    $('#button-senha').on('click', function(){
+    
+        var passwordField = $('#senha-admin');
+        var passwordFieldType = passwordField.attr('type');
+
+        if(passwordFieldType == 'password')
+        {   
+            passwordField.attr('type', 'text');
+            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye');
+            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye-slash');*/
+            $('#button-senha i').removeClass('fa-eye');
+            $('#button-senha i').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye-slash');
+            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye');*/
+            $('#button-senha i').removeClass('fa-eye-slash');
+            $('#button-senha i').addClass('fa-eye');
+        }
+    });
+
+    // CAMPO VISUALIZAR SENHA (CONFIRMAR SENHA)
+    $('#button-conf-senha').on('click', function(){
+    
+        var passwordField = $('#conf-senha-admin');
+        var passwordFieldType = passwordField.attr('type');
+
+        if(passwordFieldType == 'password')
+        {   
+            passwordField.attr('type', 'text');
+            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye');
+            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye-slash');*/
+            $('#button-conf-senha i').removeClass('fa-eye');
+            $('#button-conf-senha i').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye-slash');
+            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye');*/
+            $('#button-conf-senha i').removeClass('fa-eye-slash');
+            $('#button-conf-senha i').addClass('fa-eye');
+        }
+    });
+    
 
     //CADASTRAR PERGUNTA
     $('#form-cad-msg').unbind('submit').submit(function(e) {
@@ -532,6 +582,8 @@
         $('[name="action"]').val('inserirUserAdmin');
         let nome = $('#admin-nome').val();
         let email = $('#admin-email').val();
+        let senha1 = $('#password-admin').val();
+        let senha2 = $('#admin-password').val();
 
         if (!nome){
             return message('error', 'Campo nome vazio!');
@@ -539,16 +591,9 @@
         if (!email){
             return message('error', 'Campo e-mail vazio!');
         }
-
-        var password = document.getElementById("password-admin"), confirm_password = document.getElementById("admin-password");
-
-        function validatePassword(){
-        if(password.value != confirm_password.value) {
-            confirm_password.setCustomValidity("Senhas diferentes!");
-        } else {
-            confirm_password.setCustomValidity('');
-        }
-        }
+        if (senha1 != senha2) {
+            return message('error', 'Senhas diferentes');
+        } 
 
         $.ajax({
             method:'POST',
@@ -572,7 +617,7 @@
     //EXCLUIR USUARIO
     $('.btn-excluir-user').unbind('click').click(function(e) {
         e.preventDefault();
-        var idUser = $(e.target).closest('tr').attr('data-id');
+        var idUser = $(e.target).closest('#exampleModal').attr('data-id');
 
         $.ajax({
             type: 'POST',
@@ -584,7 +629,9 @@
             dataType: 'json',
             success: function(json) {
                 if (json.type == 'success') {
-                    $(e.target).closest('tr').hide()
+                    //$(e.target).closest('#exampleModal').hide()
+                    $('#myModal').modal('hide');
+                    
                     return message('success', json.msg);
                 } else {
                     return message('error', json.msg);
