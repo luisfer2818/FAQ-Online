@@ -148,34 +148,36 @@
                     <td class="about" data-name="email"><?php echo $value['email']; ?></td>
                     <td class="about" data-name="tipo"><a class="ui <?php echo $tipoUsuarioCor; ?> label"><?php echo $nomeTipoUsuario; ?> </a></td>
                     <td>
+                        <?php var_dump($value['id_usuario']); ?>
                         <button class="tiny ui red button" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
                     </td>
                 </tr>
+
+                <!--=========================================================-->
+                                    <!--JANELA MODAL-->
+                <!--=========================================================-->
+                    <div class="modal fade bd-example-modal-sm" data-id="<?php echo $value['id_usuario'] ?>" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel"><b class="button-modal">Deseja realmente Excluir?</b></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>
+                                <button type="button" class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIM MODAL -->
+
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-
-    <!--=========================================================-->
-                        <!--JANELA MODAL-->
-    <!--=========================================================-->
-        <div class="modal fade bd-example-modal-sm" id="exampleModal" data-id="<?php echo $value['id_usuario'] ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel"><b class="button-modal">Deseja realmente Excluir?</b></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Fechar</button>
-                    <button type="button" class="tiny ui red button btn-excluir-user" action="../controller/crud.php"><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>
-                </div>
-                </div>
-            </div>
-        </div>
-        <!-- FIM MODAL -->
 
     <!--=========================================================-->
                         <!--ADMINISTRADOR-->
@@ -582,8 +584,8 @@
         $('[name="action"]').val('inserirUserAdmin');
         let nome = $('#admin-nome').val();
         let email = $('#admin-email').val();
-        let senha1 = $('#password-admin').val();
-        let senha2 = $('#admin-password').val();
+        let senha1 = $('#senha-admin').val();
+        let senha2 = $('#conf-senha-admin').val();
 
         if (!nome){
             return message('error', 'Campo nome vazio!');
@@ -630,8 +632,10 @@
             success: function(json) {
                 if (json.type == 'success') {
                     //$(e.target).closest('#exampleModal').hide()
-                    $('#myModal').modal('hide');
-                    
+                    $('#exampleModal').modal('hide');
+                    setTimeout(() => {
+                        window.location.href = './template.php';
+                    }, 4000);                                     
                     return message('success', json.msg);
                 } else {
                     return message('error', json.msg);

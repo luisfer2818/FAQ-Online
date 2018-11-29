@@ -10,6 +10,7 @@
     if (!$_SESSION['user']) {
         header('Location: ./faq.php');
     }
+    
     //echo '<pre>';
     //var_dump($_SESSION['user']);
     //var_dump($dados);
@@ -74,32 +75,33 @@
     <!-- CADASTRAR PERGUNTAS -->
     <div class="cd-faq-items">
         <ul id="duvida" class="cd-faq-group">
-        <li class="cd-faq-title">
-            <h2>Dúvidas? Só perguntar 🤔</h2>
-        </li>
-        <li>
-            <a href="#0" class="cd-faq-trigger">Poste sua Dúvida</a>
-            <div class="cd-faq-content">
-               <form id="form-cad-msg" class="container" id="needs-validation">
-                    <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
-                    <input type="hidden" name="action" value="">
-                    <!-- <div id="msg-valida"></div> -->
-                        <textarea class="form-control" rows="5" style="resize:none" id="pergunta" name="pergunta" cols="150" rows="25" placeholder=""></textarea>
-                    <br>
-                    <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
-                </form>
-            </div>
-        </li>
+            <li class="cd-faq-title">
+                <h2>Dúvidas? Só perguntar 🤔</h2>
+            </li>
+            <li>
+                <a href="#0" class="cd-faq-trigger">Poste sua Dúvida</a>
+                <div class="cd-faq-content">
+                <form id="form-cad-msg" class="container" id="needs-validation">
+                        <input type="hidden" name="id_usuario" value="<?php echo $_SESSION['user']['id_usuario']; ?>">
+                        <input type="hidden" name="action" value="">
+                        <!-- <div id="msg-valida"></div> -->
+                            <textarea class="form-control" rows="5" style="resize:none" id="pergunta" name="pergunta" cols="150" rows="25" placeholder=""></textarea>
+                        <br>
+                        <button class="small ui secondary button" type="submit" role="button">Postar dúvida</button>
+                    </form>
+                </div>
+            </li>
         </ul>
     <br>
 
      <!-- LISTAR PERGUNTAS -->
-        <ul id="basics" class="cd-faq-group">
+    <ul id="basics" class="cd-faq-group">
         <li class="cd-faq-title">
             <h2>Perguntas</h2>
         </li>
-        <?php //echo '<pre>'; print_r($dados); ?>
+        
             <?php foreach ($dados as $key => $value): ?>
+            <?php //echo '<pre>'; print_r($user); ?>
                 <li>
                     <a class="cd-faq-trigger" href="#0"><?php echo $value['no_pergunta']; ?></a>
                     <div class="cd-faq-content">
@@ -114,11 +116,20 @@
                             <button class="small ui secondary button" type="submit" role="button">Responder</button>                     
                             <hr>
                             <?php foreach ($value['no_respostas'] as $resposta): ?>
+                            <?php //var_dump($dados); ?>
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-md-2"><b>Respostas:</b></div>
-                                        <div class="col-md-10"><a class="resposta-grid" href="#0"> <?php echo $resposta['no_resposta']; ?> </a></div>                               
-                                    </div>
+                                        <!-- <i class="add icon"></i> -->                                  
+                                        <div class="col-md-2">
+                                            <!-- <div class="field"> -->
+                                                <div data-tooltip="<?php echo $resposta['nome']; ?>"> 
+                                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>                                               
+                                                <b>Resposta:</b>
+                                                 </div>
+                                            <!-- </div> -->
+                                        </div>
+                                        <div class="col-md-10"><a class="resposta-grid" href="#0"> <?php echo $resposta['no_resposta']; ?> </a></div>
+                                    </div>                                                              
                                 </div>               
                                 <hr>                               
                             <?php endforeach; ?>
@@ -192,7 +203,11 @@
 
         // INICIA O TINYMCE -> (TEXTAREA)
         tinyMCE.init({
-           mode : "textareas"
+            mode : "textareas",
+            paste_auto_cleanup_on_paste : true,
+            paste_remove_styles: true,
+            paste_remove_styles_if_webkit: true,
+            paste_strip_class_attributes: "all",
         });
 
         //CADASTRAR PERGUNTA

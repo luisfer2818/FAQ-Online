@@ -195,7 +195,7 @@ class UserDAO
 
      public function getRespostasByPergunta($id_pergunta)
     {
-        $sql  = " SELECT * FROM respostas WHERE id_pergunta = {$id_pergunta}";
+        $sql  = " SELECT * FROM respostas r INNER JOIN usuario u ON u.id_usuario = r.id_usuario WHERE r.id_pergunta = {$id_pergunta}";
         $result = mysqli_query($this->conexao->getConn(), $sql) or die ('<script>alert("Falha ao editar o registro")</script>');
         
         $dados = array();
