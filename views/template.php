@@ -191,13 +191,6 @@
             <form name="formuser" id="form-perfil-admin" class="container" id="needs-validation">
                 <!-- <input type="hidden" name="id" value="<?php echo $_SESSION['user']['id_usuario']; ?>"> -->
                 <input type="hidden" name="action" value="">
-                <div class="alert alert-success" style="display: none;">
-                    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close"> -->
-                        <!-- <span aria-hidden="true">&times;</span> -->
-                    <!-- </button> -->
-                    <i class="fa fa-check"></i> 
-                    <strong></strong>
-                </div>
                 <fieldset>
                     <legend style="width:auto; font-size: 1.3em; color: black; font-weight: bolder;">Dados</legend>
                     <div class="form-group">
@@ -324,14 +317,10 @@
         if(passwordFieldType == 'password')
         {   
             passwordField.attr('type', 'text');
-            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye');
-            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye-slash');*/
             $('#showPassword i').removeClass('fa-eye');
             $('#showPassword i').addClass('fa-eye-slash');
         } else {
             passwordField.attr('type', 'password');
-            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye-slash');
-            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye');*/
             $('#showPassword i').removeClass('fa-eye-slash');
             $('#showPassword i').addClass('fa-eye');
         }
@@ -346,14 +335,10 @@
         if(passwordFieldType == 'password')
         {   
             passwordField.attr('type', 'text');
-            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye');
-            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye-slash');*/
             $('#button-senha i').removeClass('fa-eye');
             $('#button-senha i').addClass('fa-eye-slash');
         } else {
             passwordField.attr('type', 'password');
-            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye-slash');
-            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye');*/
             $('#button-senha i').removeClass('fa-eye-slash');
             $('#button-senha i').addClass('fa-eye');
         }
@@ -368,14 +353,10 @@
         if(passwordFieldType == 'password')
         {   
             passwordField.attr('type', 'text');
-            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye');
-            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye-slash');*/
             $('#button-conf-senha i').removeClass('fa-eye');
             $('#button-conf-senha i').addClass('fa-eye-slash');
         } else {
             passwordField.attr('type', 'password');
-            /*$('#showPassword-admin, #showPassword, #admin-showPassword i').removeClass('fa-eye-slash');
-            $('#showPassword-admin, #showPassword, #admin-showPassword i').addClass('fa-eye');*/
             $('#button-conf-senha i').removeClass('fa-eye-slash');
             $('#button-conf-senha i').addClass('fa-eye');
         }
@@ -420,7 +401,6 @@
      $('#form-grid-perguntas').unbind('submit').submit(function(e) {
         e.preventDefault();
         $('[name="action"]').val('gridPerguntas');
-        //let dadosForm = $(this).serialize();
 
         $.ajax({
             type: 'GET',
@@ -533,8 +513,6 @@
     $('.btn-excluir-msg').unbind('click').click(function(e) {
         e.preventDefault();
         var idMsg = $(e.target).closest('tr').attr('data-id');
-
-        //console.log(idMsg);
 
         $.ajax({
             type: 'POST',
